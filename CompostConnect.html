@@ -1,0 +1,2925 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CompostConnect – Turn Scraps into Community Growth</title>
+  <meta name="description"
+    content="CompostConnect helps apartment residents track food waste composting, earn rewards, and build greener communities together." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d', 950: '#052e16' },
+            amber: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309', 800: '#92400e', 900: '#78350f' },
+            earth: { 50: '#faf5f0', 100: '#f5ebe0', 200: '#e8d5c0', 300: '#d4b896', 400: '#c09570', 500: '#a67c52', 600: '#8c6239', 700: '#7a5230', 800: '#654428', 900: '#543822' },
+            sage: { 50: '#f6f7f4', 100: '#ebede5', 200: '#d4d9c9', 300: '#b5bda3', 400: '#91a07d', 500: '#72845f', 600: '#5a6a4a', 700: '#47553b', 800: '#3a4530', 900: '#303929' },
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Playfair Display', 'serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f6f7f4;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .glass-dark {
+      background: rgba(21, 128, 61, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(21, 128, 61, 0.2);
+    }
+
+    .hero-bg {
+      background: linear-gradient(135deg, #052e16 0%, #14532d 35%, #166534 60%, #1a5c38 80%, #2d6a4f 100%);
+    }
+
+    .card-hover {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #22c55e, #4ade80, #86efac);
+      background-size: 200% 100%;
+      animation: shimmer 2.5s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0
+      }
+
+      100% {
+        background-position: 200% 0
+      }
+    }
+
+    .rank-gold {
+      background: linear-gradient(135deg, #f59e0b, #fcd34d);
+    }
+
+    .rank-silver {
+      background: linear-gradient(135deg, #94a3b8, #cbd5e1);
+    }
+
+    .rank-bronze {
+      background: linear-gradient(135deg, #a67c52, #d4b896);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 50%, #166534 100%);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(22, 163, 74, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(22, 163, 74, 0.55);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .qr-pulse {
+      animation: qrPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes qrPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5)
+      }
+
+      50% {
+        box-shadow: 0 0 0 16px rgba(74, 222, 128, 0)
+      }
+    }
+
+    .nav-blur {
+      background: rgba(5, 46, 22, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .metric-card {
+      background: #ffffff;
+    }
+
+    /* ── GREETING HEADER ── */
+    .greeting-header {
+      background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #166534 100%);
+    }
+
+    /* ── QR SCANNER CENTRAL CARD ── */
+    .qr-scanner-card {
+      background: #ffffff;
+      border: 2px solid #bbf7d0;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(34, 197, 94, 0.08);
+      transition: box-shadow 0.3s ease;
+    }
+    .qr-scanner-card:hover {
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.14);
+    }
+    .qr-scanner-card #reader__dashboard {
+      color: #14532d !important;
+    }
+    .qr-scanner-card #reader button {
+      background: linear-gradient(135deg, #16a34a, #15803d) !important;
+    }
+    .qr-scanner-card #reader select {
+      background: #f0fdf4 !important;
+      color: #14532d !important;
+      border: 1.5px solid #bbf7d0 !important;
+    }
+    .qr-scanner-card #reader a {
+      color: #16a34a !important;
+    }
+    .qr-scanner-card #reader__status_span {
+      color: #166534 !important;
+      background: rgba(187, 247, 208, 0.4) !important;
+    }
+
+    /* ── INFO TOOLTIP ── */
+    .info-tooltip-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .info-tooltip-wrap .info-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #e0f2fe;
+      color: #0369a1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 6px;
+      transition: background 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+    .info-tooltip-wrap:hover .info-icon {
+      background: #bae6fd;
+      transform: scale(1.15);
+    }
+    .info-tooltip-bubble {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.95);
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      white-space: nowrap;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 100;
+    }
+    .info-tooltip-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #0f172a;
+    }
+    .info-tooltip-wrap:hover .info-tooltip-bubble {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+      pointer-events: auto;
+    }
+
+    /* ── READ-ONLY FORM FIELDS ── */
+    .field-readonly {
+      background: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #475569 !important;
+      cursor: not-allowed;
+    }
+    .field-readonly:focus {
+      box-shadow: none !important;
+      border-color: #e2e8f0 !important;
+    }
+
+    .harvest-card {
+      background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
+    }
+
+    .wing-bar {
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-number {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tier-champion {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    }
+
+    .counter-animate {
+      animation: countPulse 0.4s ease-out;
+    }
+
+    .scan-spinner {
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 220px;
+      background: rgba(5, 30, 14, 0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(74, 222, 128, 0.18);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      z-index: 200;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .profile-dropdown.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-6px);
+    }
+
+    @keyframes countPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
+    .confetti-piece {
+      position: absolute;
+      border-radius: 2px;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1
+      }
+
+      100% {
+        transform: translateY(320px) rotate(720deg);
+        opacity: 0
+      }
+    }
+
+    .floating-leaf {
+      position: absolute;
+      animation: leafFloat linear infinite;
+      pointer-events: none;
+      opacity: 0.14;
+    }
+
+    @keyframes leafFloat {
+      0% {
+        transform: translateY(100%) rotate(0deg);
+        opacity: 0.14
+      }
+
+      100% {
+        transform: translateY(-130px) rotate(180deg);
+        opacity: 0
+      }
+    }
+
+    /* ── PROCESS & MEMBERS MODALS ── */
+    @keyframes modalPop {
+      0% { opacity: 0; transform: translateY(12px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes backdropFade {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .modal-panel { animation: modalPop 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+    .modal-backdrop { animation: backdropFade 0.2s ease-out; }
+
+    .process-step {
+      transition: transform 0.2s ease;
+    }
+    .process-step:hover {
+      transform: translateX(3px);
+    }
+
+    @keyframes cardFadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .member-card {
+      animation: cardFadeIn 0.35s ease-out backwards;
+    }
+
+    .process-cta-btn {
+      transition: all 0.25s ease;
+    }
+    .process-cta-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f0fdf4
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #86efac;
+      border-radius: 3px
+    }
+
+    select,
+    input[type=date],
+    input[type=number],
+    input[type=password],
+    textarea {
+      background: white;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: inherit;
+      color: #14532d;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      width: 100%;
+    }
+
+    select:focus,
+    input[type=date]:focus,
+    input[type=number]:focus,
+    input[type=password]:focus,
+    textarea:focus {
+      border-color: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+    }
+
+    /* ── LOGIN SCREEN ── */
+    .login-bg {
+      background: linear-gradient(135deg, #052e16 0%, #14532d 40%, #166534 70%, #1a5c38 100%);
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .account-chip {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .account-chip:hover {
+      background: rgba(74, 222, 128, 0.15);
+      border-color: rgba(74, 222, 128, 0.4);
+    }
+
+    .account-chip.selected {
+      background: rgba(74, 222, 128, 0.18);
+      border-color: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15);
+    }
+
+    .login-pin-input {
+      background: rgba(255, 255, 255, 0.09) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+      color: #fff !important;
+      letter-spacing: 0.3em;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    .login-pin-input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0;
+      font-size: 0.85rem;
+    }
+
+    .login-pin-input:focus {
+      border-color: #4ade80 !important;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2) !important;
+    }
+
+    #login-screen {
+      transition: opacity 0.45s ease;
+    }
+
+    #login-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .login-err {
+      animation: shake 0.35s ease;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-8px);
+      }
+
+      60% {
+        transform: translateX(8px);
+      }
+    }
+
+    /* ── PUSH NOTIFICATION ── */
+    .push-notif {
+      position: fixed;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 600;
+      max-width: 420px;
+      width: calc(100% - 24px);
+      transition: top 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+
+    .push-notif.visible {
+      top: 68px;
+      pointer-events: all;
+    }
+
+    /* ── HTML5-QRCODE SCANNER CUSTOM STYLING ── */
+    #reader {
+      width: 100% !important;
+      border: none !important;
+      background: transparent !important;
+    }
+
+    #reader video {
+      border-radius: 12px !important;
+      max-width: 100% !important;
+      object-fit: cover !important;
+    }
+
+    #reader__scan_region {
+      background: rgba(0, 0, 0, 0.4) !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+    }
+
+    #reader__dashboard {
+      padding: 10px !important;
+      color: #dcfce7 !important;
+    }
+
+    #reader button {
+      background: linear-gradient(135deg, #16a34a, #15803d) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(74, 222, 128, 0.4) !important;
+      border-radius: 10px !important;
+      padding: 7px 14px !important;
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      margin: 4px 2px !important;
+      transition: all 0.2s ease !important;
+    }
+
+    #reader button:hover {
+      background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.4) !important;
+    }
+
+    #reader select {
+      background: rgba(5, 46, 22, 0.9) !important;
+      color: #86efac !important;
+      border: 1.5px solid rgba(74, 222, 128, 0.3) !important;
+      border-radius: 8px !important;
+      padding: 6px 10px !important;
+      font-size: 0.8rem !important;
+      margin: 4px 0 !important;
+      outline: none !important;
+    }
+
+    #reader a {
+      color: #86efac !important;
+      font-size: 0.75rem !important;
+      text-decoration: underline !important;
+    }
+
+    #reader__status_span {
+      font-size: 0.75rem !important;
+      color: #86efac !important;
+      background: rgba(0, 0, 0, 0.3) !important;
+      padding: 4px 8px !important;
+      border-radius: 6px !important;
+    }
+
+    /* ── QR SCAN LINE ANIMATION ── */
+    .qr-scan-line {
+      top: 0;
+      animation: qrScanMove 2s ease-in-out infinite;
+    }
+    @keyframes qrScanMove {
+      0%   { top: 5%; opacity: 1; }
+      50%  { top: 90%; opacity: 0.8; }
+      100% { top: 5%; opacity: 1; }
+    }
+
+    /* ── QR TRIGGER BUTTON ACTIVE STATE ── */
+    #open-qr-scanner-btn:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-gray-800">
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div id="login-screen" class="fixed inset-0 z-[500] flex items-center justify-center p-3 login-bg overflow-y-auto">
+
+    <!-- Animated background leaves -->
+    <div id="login-leaves" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+
+    <!-- Glow blobs -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-green-500/10 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-green-300/8 blur-3xl pointer-events-none"></div>
+
+    <div class="login-card w-full max-w-md relative z-10 my-auto" style="padding: clamp(20px, 5vw, 32px);">
+
+      <!-- Logo -->
+      <div class="flex items-center justify-center gap-2.5 mb-5">
+        <div class="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center shadow-lg text-xl">🌿</div>
+        <span class="font-black text-white text-xl tracking-tight"
+          style="font-family:'Playfair Display',serif">Compost<span class="text-green-400">Connect</span></span>
+      </div>
+
+      <h2 class="text-white font-bold text-base text-center mb-0.5">Welcome back 👋</h2>
+      <p class="text-green-400 text-xs text-center mb-4">Select your apartment to continue</p>
+
+      <!-- Account selector -->
+      <div class="grid grid-cols-2 gap-2 mb-4" id="account-grid">
+        <!-- rendered by JS -->
+      </div>
+
+      <!-- PIN -->
+      <div class="mb-1.5">
+        <label class="block text-green-300 text-xs font-semibold mb-1.5">Enter PIN / Password</label>
+        <input type="password" id="login-pin" class="login-pin-input" placeholder="Enter your PIN" maxlength="20"
+          onkeydown="if(event.key==='Enter') doLogin()" autocomplete="current-password" />
+      </div>
+      <p id="login-error" class="text-red-400 text-xs text-center mb-2 hidden">❌ Incorrect PIN. Please try again.</p>
+
+      <!-- Login button -->
+      <button onclick="doLogin()" id="login-btn"
+        class="btn-primary w-full py-3 rounded-xl text-white font-bold text-sm mt-1">Sign In →</button>
+
+      <!-- Forgot PIN Trigger & Search Section -->
+      <div class="mt-2 text-center">
+        <button type="button" onclick="toggleForgotPin()" id="forgot-pin-toggle"
+          class="text-xs text-green-300/80 hover:text-green-300 hover:underline transition-colors focus:outline-none">
+          Forgot PIN?
+        </button>
+      </div>
+
+      <!-- Forgot PIN Section -->
+      <div id="forgot-pin-section" class="hidden mt-3 pt-3 border-t border-white/10 text-left">
+        <label for="forgot-username" class="block text-green-300 text-xs font-semibold mb-1.5">Enter Name to Search
+          PIN</label>
+        <div class="flex gap-2">
+          <input type="text" id="forgot-username" placeholder="e.g. Pooja Singh"
+            class="login-pin-input flex-1 !text-left !px-3 !py-2 !text-xs !tracking-normal"
+            onkeydown="if(event.key==='Enter') findPin()" />
+          <button type="button" onclick="findPin()" id="find-pin-btn"
+            class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-3 py-2 rounded-xl transition-all shadow hover:shadow-md active:scale-95 flex-shrink-0">
+            Find PIN
+          </button>
+        </div>
+        <div id="forgot-pin-result" class="hidden"></div>
+      </div>
+
+      <!-- Demo hint -->
+      <div class="mt-4 bg-white/5 border border-white/10 rounded-xl p-3">
+        <p class="text-green-400 text-xs font-semibold mb-1.5">🔑 Demo PINs</p>
+        <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-xs text-green-300/70">
+          <span>Pooja (7B) → <b class="text-green-300">1234</b></span>
+          <span>Priya (3A) → <b class="text-green-300">2345</b></span>
+          <span>Rohit (12C) → <b class="text-green-300">3456</b></span>
+          <span>Manager → <b class="text-green-300">admin</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="nav-blur fixed top-0 left-0 right-0 z-50 px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl bg-green-500 flex items-center justify-center shadow-lg">
+        <span class="text-xl">🌿</span>
+      </div>
+      <span class="font-bold text-white text-xl tracking-tight"
+        style="font-family:'Playfair Display',serif">Compost<span class="text-green-400">Connect</span></span>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Desktop Navigation Links (hidden on mobile) -->
+      <div class="hidden md:flex items-center gap-1 md:gap-2">
+        <button onclick="showTab('dashboard')" id="nav-dashboard"
+          class="nav-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium text-green-200 hover:text-white hover:bg-white/10 transition-all">Dashboard</button>
+        <button onclick="showTab('leaderboard')" id="nav-leaderboard"
+          class="nav-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium text-green-200 hover:text-white hover:bg-white/10 transition-all">Leaderboard</button>
+        <button onclick="showTab('harvest')" id="nav-harvest"
+          class="nav-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium text-green-200 hover:text-white hover:bg-white/10 transition-all">HarvestShare</button>
+        <button onclick="openFacilityModal()"
+          class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium bg-green-700/50 text-green-200 hover:bg-green-700 hover:text-white transition-all border border-green-700/30">⚙
+          Manager</button>
+      </div>
+
+      <!-- Profile Avatar Button (always visible) -->
+      <div class="relative ml-1 flex-shrink-0" id="profile-wrapper">
+        <button id="profile-btn" onclick="toggleProfileDropdown()"
+          class="w-8 h-8 rounded-full bg-gradient-to-br from-rose-300 to-rose-500 flex items-center justify-center text-sm font-bold text-white shadow hover:ring-2 hover:ring-rose-200 transition-all focus:outline-none"
+          aria-label="Profile">
+          P
+        </button>
+        <div id="profile-dropdown" class="profile-dropdown hidden">
+          <div class="flex items-center gap-3 mb-4">
+            <div id="pd-avatar"
+              class="w-11 h-11 rounded-full bg-gradient-to-br from-rose-300 to-rose-500 flex items-center justify-center text-lg font-black text-white shadow">
+              P</div>
+            <div>
+              <div id="pd-name" class="font-bold text-white text-sm">—</div>
+              <div id="pd-apt" class="text-green-400 text-xs">—</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <div class="bg-green-900/60 rounded-xl p-2.5 text-center">
+              <div class="font-black text-green-300 text-base" id="pd-kg">47.2</div>
+              <div class="text-gray-400 text-xs">kg diverted</div>
+            </div>
+            <div class="bg-green-900/60 rounded-xl p-2.5 text-center">
+              <div class="font-black text-amber-300 text-base" id="pd-drops">24</div>
+              <div class="text-gray-400 text-xs">drop-offs</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 rounded-xl px-3 py-2 mb-3">
+            <span class="text-lg">🏅</span>
+            <div>
+              <div id="pd-tier" class="text-amber-300 text-xs font-bold">Champion Tier</div>
+              <div class="text-gray-400 text-xs">5-star resident</div>
+            </div>
+          </div>
+          <div class="border-t border-white/10 pt-3 space-y-1">
+            <button onclick="showTab('dashboard');toggleProfileDropdown()"
+              class="w-full text-left px-3 py-1.5 rounded-lg text-green-300 hover:bg-white/10 text-xs font-medium transition-colors">🏠
+              Dashboard</button>
+            <button onclick="showTab('harvest');toggleProfileDropdown()"
+              class="w-full text-left px-3 py-1.5 rounded-lg text-green-300 hover:bg-white/10 text-xs font-medium transition-colors">🌾
+              My HarvestShare</button>
+            <button onclick="openFacilityModal();toggleProfileDropdown()"
+              class="w-full text-left px-3 py-1.5 rounded-lg text-green-300 hover:bg-white/10 text-xs font-medium transition-colors">⚙️
+              Facility Manager</button>
+            <div class="border-t border-white/10 mt-2 pt-2">
+              <button onclick="doLogout()"
+                class="w-full text-left px-3 py-1.5 rounded-lg text-red-400 hover:bg-red-500/10 text-xs font-medium transition-colors">🚪
+                Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-16 pb-24 md:pb-0">
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section id="tab-dashboard" class="tab-section min-h-screen">
+
+      <!-- Hidden floating leaves container (used by createFloatingLeaves) -->
+      <div id="floating-leaves-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+      <!-- ── Slim Greeting Header ── -->
+      <div class="greeting-header relative overflow-hidden">
+        <div class="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-green-500/10 blur-3xl pointer-events-none"></div>
+        <div class="relative max-w-5xl mx-auto px-4 py-6 md:py-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="text-green-400 text-xs font-medium" id="greeting-wing">Building 7 · Wing B</span>
+              </div>
+              <h1 class="text-2xl md:text-3xl text-white font-black leading-tight" style="font-family:'Playfair Display',serif" id="greeting-title">
+                Good morning, Pooja 👋
+              </h1>
+              <p class="text-green-300/80 text-sm mt-1">Every scrap feeds the future. Log your waste below.</p>
+              <button onclick="openProcessModal()" id="our-process-btn"
+                class="process-cta-btn mt-3 inline-flex items-center gap-2 bg-white/10 border border-white/25 text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-xl hover:shadow-lg"
+                aria-haspopup="dialog" aria-controls="process-modal">
+                <span class="text-base">🔄</span> Our Process
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </div>
+            <!-- Compact Progress Ring -->
+            <div class="flex-shrink-0 flex items-center gap-4">
+              <div class="relative w-20 h-20">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10" />
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="url(#ringGrad)" stroke-width="10"
+                    stroke-linecap="round" stroke-dasharray="314" id="hero-ring" stroke-dashoffset="170"
+                    style="transition:stroke-dashoffset 1.5s ease;" />
+                  <defs>
+                    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#4ade80" />
+                      <stop offset="100%" stop-color="#22c55e" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span class="text-lg font-black text-white stat-number" id="hero-kg">47.2</span>
+                  <span class="text-green-400 text-[10px] font-medium">kg</span>
+                </div>
+              </div>
+              <div class="hidden sm:block text-right">
+                <div class="text-white text-sm font-bold" id="greeting-month-total">47.2 kg</div>
+                <div class="text-green-400/70 text-xs">diverted this month</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Impact Metrics ── -->
+      <div class="max-w-5xl mx-auto px-4 -mt-5 relative z-10">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="metric-card rounded-2xl p-5 card-hover shadow-md border border-gray-100">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-xl">🥦</div>
+              <span class="text-[11px] font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">Personal</span>
+            </div>
+            <div class="stat-number text-3xl font-black text-gray-800" id="personal-kg">47.2</div>
+            <div class="text-gray-400 text-sm mt-0.5">kg Waste Diverted</div>
+          </div>
+          <div class="metric-card rounded-2xl p-5 card-hover shadow-md border border-gray-100">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-xl">🏢</div>
+              <span class="text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">Building</span>
+            </div>
+            <div class="stat-number text-3xl font-black text-gray-800" id="building-kg">612.8</div>
+            <div class="text-gray-400 text-sm mt-0.5">kg Total Diverted</div>
+          </div>
+          <div class="metric-card rounded-2xl p-5 card-hover shadow-md border border-gray-100">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-10 h-10 rounded-xl bg-yellow-50 flex items-center justify-center text-xl">🪴</div>
+              <span class="text-[11px] font-semibold text-yellow-700 bg-yellow-50 px-2 py-0.5 rounded-full">Produced</span>
+            </div>
+            <div class="flex items-center gap-0">
+              <div class="stat-number text-3xl font-black text-gray-800" id="fertilizer-kg">183.8</div>
+              <div class="info-tooltip-wrap">
+                <span class="info-icon">ℹ</span>
+                <div class="info-tooltip-bubble">
+                  <strong style="color:#86efac">Fertilizer Estimate Formula</strong><br>
+                  Fertilizer (kg) = Building Total × 0.30<br>
+                  <span style="color:#94a3b8" id="fertilizer-formula-example">612.8 kg × 0.30 = 183.8 kg</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-gray-400 text-sm mt-0.5">kg Fertilizer Est.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── QR Scanner Trigger ── -->
+      <div class="max-w-5xl mx-auto px-4 mt-6">
+        <button id="open-qr-scanner-btn" onclick="openQrScannerModal()"
+          class="qr-trigger-btn group w-full max-w-md mx-auto flex items-center gap-4 p-4 rounded-2xl bg-white border-2 border-green-200 shadow-sm hover:shadow-md hover:border-green-400 transition-all duration-200 text-left">
+          <!-- Icon -->
+          <div class="relative flex-shrink-0">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center shadow-md group-hover:shadow-green-300/60 group-hover:scale-105 transition-all duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z" />
+              </svg>
+            </div>
+            <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full animate-pulse"></span>
+          </div>
+          <!-- Text -->
+          <div class="flex-1 min-w-0">
+            <div class="font-bold text-gray-800 text-sm">Scan QR to Log Waste</div>
+            <div class="text-[12px] text-gray-400 mt-0.5">Camera scan or upload a QR image</div>
+            <div class="flex items-center gap-3 mt-2">
+              <span class="text-[11px] bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full font-medium">📷 Camera</span>
+              <span class="text-[11px] bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-medium">🖼 Upload Image</span>
+            </div>
+          </div>
+          <!-- Arrow -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300 group-hover:text-green-500 group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- ── QR Scanner Full-Screen Modal ── -->
+      <div id="qr-scanner-modal" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title"
+        class="fixed inset-0 z-[150] flex items-end sm:items-center justify-center hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeQrScannerModal()"></div>
+        <!-- Panel -->
+        <div class="relative w-full sm:max-w-sm bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden"
+          style="max-height:92dvh;overflow-y:auto">
+
+          <!-- Header -->
+          <div class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-gray-100">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
+                </svg>
+              </div>
+              <div>
+                <h2 id="qr-modal-title" class="font-bold text-gray-900 text-sm">QR Bin Scanner</h2>
+                <p class="text-[11px] text-gray-400">Camera or local image</p>
+              </div>
+            </div>
+            <button onclick="closeQrScannerModal()" aria-label="Close scanner"
+              class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors text-lg font-bold leading-none">×</button>
+          </div>
+
+          <!-- Tab bar: Camera / Upload -->
+          <div class="flex gap-1 mx-5 mt-4 p-1 bg-gray-100 rounded-xl">
+            <button id="qr-tab-camera" onclick="switchQrTab('camera')"
+              class="qr-tab flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-200 bg-white text-green-700 shadow-sm">
+              📷 Camera Scan
+            </button>
+            <button id="qr-tab-upload" onclick="switchQrTab('upload')"
+              class="qr-tab flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-200 text-gray-500">
+              🖼 Upload Image
+            </button>
+          </div>
+
+          <!-- Camera panel -->
+          <div id="qr-panel-camera" class="px-5 pb-5 pt-3">
+            <!-- Scanner viewport -->
+            <div class="relative bg-gray-950 rounded-2xl overflow-hidden" style="aspect-ratio:1;">
+              <div id="reader" class="w-full h-full"></div>
+              <!-- Corner brackets overlay -->
+              <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+                <div class="relative w-44 h-44">
+                  <span class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-green-400 rounded-tl-lg"></span>
+                  <span class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-green-400 rounded-tr-lg"></span>
+                  <span class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-green-400 rounded-bl-lg"></span>
+                  <span class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-green-400 rounded-br-lg"></span>
+                  <!-- Scan line -->
+                  <div class="qr-scan-line absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-400 to-transparent"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Status -->
+            <div id="qr-camera-status" class="mt-3 flex items-center justify-center gap-2 text-xs text-gray-400">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+              Point camera at a bin QR code
+            </div>
+          </div>
+
+          <!-- Upload panel -->
+          <div id="qr-panel-upload" class="px-5 pb-5 pt-3 hidden">
+            <!-- Drop zone -->
+            <label for="qr-file-input" id="qr-dropzone"
+              class="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-gray-200 rounded-2xl p-8 cursor-pointer hover:border-green-400 hover:bg-green-50/50 transition-all duration-200 text-center">
+              <div id="qr-dropzone-icon" class="w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+              </div>
+              <div>
+                <div class="font-semibold text-sm text-gray-700">Upload a QR image</div>
+                <div class="text-[11px] text-gray-400 mt-0.5">JPG, PNG, WebP supported</div>
+              </div>
+              <span class="text-[11px] bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full font-medium">Choose File</span>
+            </label>
+            <input type="file" id="qr-file-input" accept="image/*" class="hidden" onchange="handleQrFileUpload(event)" />
+            <!-- Preview + result -->
+            <div id="qr-upload-preview" class="hidden mt-4">
+              <div class="relative rounded-2xl overflow-hidden bg-gray-100">
+                <img id="qr-preview-img" class="w-full object-contain" style="max-height:180px" alt="QR preview" />
+                <button onclick="resetQrUpload()" class="absolute top-2 right-2 w-7 h-7 bg-black/60 hover:bg-black/80 rounded-full flex items-center justify-center text-white text-sm transition-colors">×</button>
+              </div>
+              <div id="qr-upload-status" class="mt-2 text-xs text-center text-gray-500">Scanning image…</div>
+            </div>
+          </div>
+
+          <!-- Bottom tip -->
+          <div class="mx-5 mb-5 bg-amber-50 border border-amber-200/60 rounded-xl px-3.5 py-2.5 flex items-start gap-2.5">
+            <span class="text-base flex-shrink-0 mt-0.5">💡</span>
+            <p class="text-[11px] text-amber-800 leading-relaxed">
+              Use the <strong>Facility Manager</strong> panel to generate a QR code, then scan it here or test-simulate a resident scan.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Cards Row ── -->
+      <div class="max-w-5xl mx-auto px-4 mt-6 pb-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+          <!-- Activity Feed -->
+          <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+            <div class="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between">
+              <h3 class="font-bold text-gray-800 text-sm">Recent Activity</h3>
+              <span class="text-[11px] text-gray-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>Live</span>
+            </div>
+            <ul id="activity-feed" class="divide-y divide-gray-50"></ul>
+          </div>
+
+          <!-- Participation Card -->
+          <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+            <div class="px-5 py-3.5 border-b border-gray-100">
+              <h3 class="font-bold text-gray-800 text-sm">Your Participation Tier</h3>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center gap-4 mb-5">
+                <div class="w-14 h-14 rounded-2xl tier-champion flex items-center justify-center text-2xl shadow-md">🏅</div>
+                <div>
+                  <div class="font-black text-lg text-amber-700" id="part-tier">Champion</div>
+                  <div class="text-xs text-gray-500" id="part-name">—</div>
+                  <div class="flex items-center gap-1 mt-0.5">
+                    <span class="text-amber-400 text-sm">★★★★★</span>
+                    <span class="text-[11px] text-gray-400">5-star</span>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-xs text-gray-500">
+                  <span>Monthly Goal Progress</span>
+                  <span class="font-semibold text-green-700" id="progress-pct">78%</span>
+                </div>
+                <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div id="personal-progress-bar" class="h-full progress-bar rounded-full wing-bar" style="width:78%"></div>
+                </div>
+                <div class="flex justify-between text-[11px] text-gray-400">
+                  <span id="progress-label">47.2 kg / 60 kg goal</span>
+                  <span class="text-green-600 font-medium" id="progress-remaining">+12.8 kg to go</span>
+                </div>
+              </div>
+              <div class="mt-4 grid grid-cols-3 gap-2.5">
+                <div class="bg-green-50 rounded-xl p-2.5 text-center">
+                  <div class="font-black text-green-700 text-lg stat-number" id="drop-count">24</div>
+                  <div class="text-[11px] text-gray-500">Drop-offs</div>
+                </div>
+                <div class="bg-amber-50 rounded-xl p-2.5 text-center">
+                  <div class="font-black text-amber-700 text-lg">8</div>
+                  <div class="text-[11px] text-gray-500">Streak days</div>
+                </div>
+                <div class="bg-yellow-50 rounded-xl p-2.5 text-center">
+                  <div class="font-black text-yellow-700 text-lg">3</div>
+                  <div class="text-[11px] text-gray-500">Harvests</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Members Section ── -->
+      <div class="max-w-5xl mx-auto px-4 pb-16" id="members-section">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
+          <div>
+            <div class="inline-flex items-center gap-2 bg-green-100 text-green-800 rounded-full px-3 py-1 text-xs font-semibold mb-2">
+              <span>🤝</span> Our Community
+            </div>
+            <h2 class="text-2xl md:text-3xl text-gray-800 font-black" style="font-family:'Playfair Display',serif">
+              Members</h2>
+            <p class="text-gray-500 text-sm mt-1 max-w-md">The residents and staff powering Building 7's composting
+              program.</p>
+          </div>
+          <button id="add-member-btn" onclick="openMemberModal()"
+            class="hidden btn-primary items-center gap-2 text-white font-semibold text-sm px-4 py-2.5 rounded-xl flex-shrink-0"
+            aria-haspopup="dialog" aria-controls="member-modal">
+            <span class="text-base leading-none">＋</span> Add Member
+          </button>
+        </div>
+        <div id="members-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      </div>
+    </section>
+
+    <!-- ==================== LEADERBOARD ==================== -->
+    <section id="tab-leaderboard" class="tab-section hidden min-h-screen" style="background:#f6f7f4">
+      <div class="max-w-3xl mx-auto px-4 py-10">
+        <div class="text-center mb-8">
+          <div
+            class="inline-flex items-center gap-2 bg-green-100 text-green-800 rounded-full px-4 py-1.5 text-xs font-semibold mb-3">
+            <span>🏆</span> August 2026 Rankings
+          </div>
+          <h2 class="text-3xl md:text-4xl text-green-900 font-black" style="font-family:'Playfair Display',serif">
+            Wing-Wise Leaderboard</h2>
+          <p class="text-gray-500 mt-2 text-sm">Which wing is composting the most this month?</p>
+        </div>
+
+        <!-- Community Goal Banner -->
+        <div
+          class="bg-gradient-to-r from-green-800 to-green-600 rounded-2xl p-5 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div class="absolute right-2 top-0 bottom-0 flex items-center justify-center opacity-10 text-9xl select-none">
+            🌿</div>
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
+            <div>
+              <div class="text-green-300 text-xs font-semibold uppercase tracking-wider mb-1">Community Monthly Goal
+              </div>
+              <div class="font-black text-3xl"><span id="community-kg">612.8</span> <span
+                  class="text-green-300 font-normal text-lg">/ 800 kg</span>
+              </div>
+              <div class="text-green-300 text-sm mt-1" id="community-pct">76.6% complete — 187.2 kg to go!</div>
+            </div>
+            <div class="flex-shrink-0">
+              <div class="text-right text-sm text-green-300 mb-1.5">13 days left</div>
+              <div class="w-48 h-3 bg-green-900/60 rounded-full overflow-hidden">
+                <div class="h-full progress-bar rounded-full wing-bar" id="community-goal-bar" style="width:76.6%">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wing Rankings -->
+        <div class="space-y-4" id="leaderboard-list"></div>
+
+        <!-- Your Wing -->
+        <div class="mt-8 glass-dark rounded-2xl p-5 border border-green-300/30" id="your-wing-panel">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-2xl">📍</span>
+            <div>
+              <div class="font-bold text-green-800" id="your-wing-title">You're in Wing B</div>
+              <div class="text-xs text-green-600" id="your-wing-gap">2nd place – 16.2 kg behind Wing A</div>
+            </div>
+          </div>
+          <div class="flex justify-between text-xs text-gray-500 mb-1.5">
+            <span id="your-wing-label">Wing B Progress to Goal (200 kg)</span>
+            <span class="font-semibold text-green-700" id="your-wing-pct">83%</span>
+          </div>
+          <div class="h-3 bg-green-100 rounded-full overflow-hidden">
+            <div class="h-full progress-bar rounded-full wing-bar" id="your-wing-bar" style="width:83%"></div>
+          </div>
+          <div class="mt-3 text-xs text-green-700 bg-green-50 rounded-xl px-3 py-2 inline-flex items-center gap-1.5"
+            id="your-wing-tip">
+            <span>💡</span> Each resident contributing 2 more kg this week can push your wing to #1!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== HARVESTSHARE ==================== -->
+    <section id="tab-harvest" class="tab-section hidden min-h-screen" style="background:#fffbeb40">
+      <div class="max-w-5xl mx-auto px-4 py-10">
+        <div class="text-center mb-8">
+          <div
+            class="inline-flex items-center gap-2 bg-amber-100 text-amber-800 rounded-full px-4 py-1.5 text-xs font-semibold mb-3">
+            <span>🌾</span> Available Now
+          </div>
+          <h2 class="text-3xl md:text-4xl text-amber-900 font-black" style="font-family:'Playfair Display',serif">
+            HarvestShare</h2>
+          <p class="text-gray-500 mt-2 text-sm max-w-md mx-auto">Claim fresh garden yields and compost rewards based on
+            your participation tier.</p>
+        </div>
+
+        <!-- Tier Legend -->
+        <div class="flex flex-wrap gap-3 justify-center mb-8">
+          <div class="flex items-center gap-1.5 bg-white rounded-full px-4 py-1.5 shadow-sm text-xs font-medium">
+            <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> Champion (40+ kg)
+          </div>
+          <div class="flex items-center gap-1.5 bg-white rounded-full px-4 py-1.5 shadow-sm text-xs font-medium">
+            <span class="w-3 h-3 rounded-full bg-green-400 inline-block"></span> Grower (20–39 kg)
+          </div>
+          <div class="flex items-center gap-1.5 bg-white rounded-full px-4 py-1.5 shadow-sm text-xs font-medium">
+            <span class="w-3 h-3 rounded-full bg-gray-400 inline-block"></span> Sprouter (1–19 kg)
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="harvest-catalog"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Bottom Nav -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 md:hidden">
+    <div class="glass border-t border-white/50 flex">
+      <button onclick="showTab('dashboard')" id="mob-dashboard"
+        class="mob-nav flex-1 flex flex-col items-center py-2.5 text-green-700">
+        <span class="text-xl">🏠</span><span class="text-xs font-medium mt-0.5">Home</span>
+      </button>
+      <button onclick="showTab('leaderboard')" id="mob-leaderboard"
+        class="mob-nav flex-1 flex flex-col items-center py-2.5 text-gray-400">
+        <span class="text-xl">🏆</span><span class="text-xs font-medium mt-0.5">Board</span>
+      </button>
+      <button onclick="showTab('harvest')" id="mob-harvest"
+        class="mob-nav flex-1 flex flex-col items-center py-2.5 text-gray-400">
+        <span class="text-xl">🌾</span><span class="text-xs font-medium mt-0.5">Harvest</span>
+      </button>
+      <button onclick="openFacilityModal()" class="mob-nav flex-1 flex flex-col items-center py-2.5 text-gray-400">
+        <span class="text-xl">⚙️</span><span class="text-xs font-medium mt-0.5">Manager</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== WASTE LOGGING FORM MODAL (Triggered after QR Scan) ===== -->
+  <div id="waste-form-modal" role="dialog" aria-modal="true" aria-labelledby="waste-modal-title"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeWasteFormModal()"></div>
+    <div
+      class="relative bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl overflow-hidden border border-green-200 animate-in fade-in zoom-in duration-200"
+      style="background:rgba(255,255,255,0.98)">
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-green-100 flex items-center justify-center text-xl shadow-sm">
+            🗑️
+          </div>
+          <div>
+            <h2 id="waste-modal-title" class="font-bold text-green-900 text-lg"
+              style="font-family:'Playfair Display',serif">
+              Log Waste Drop-Off
+            </h2>
+            <p class="text-xs text-gray-500">QR Code Verified · Smart Bin Connected</p>
+          </div>
+        </div>
+        <button onclick="closeWasteFormModal()" aria-label="Close"
+          class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors text-xl font-bold leading-none">
+          ×
+        </button>
+      </div>
+
+      <!-- Scanned QR Feedback badge -->
+      <div class="bg-green-50 border border-green-200/80 rounded-xl px-3.5 py-2.5 mb-4 flex items-center gap-2.5">
+        <span class="text-base flex-shrink-0">📷</span>
+        <div class="text-xs text-green-800 font-medium truncate flex-1" id="scanned-bin-label">
+          Smart Bin #B-02 (Wing B Station)
+        </div>
+        <span
+          class="text-[10px] bg-green-200 text-green-800 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+          Scanned
+        </span>
+      </div>
+
+      <!-- Read-only notice -->
+      <div class="flex items-center gap-2 bg-blue-50 border border-blue-200/60 rounded-lg px-3 py-2 mb-4">
+        <span class="text-sm">🔒</span>
+        <span class="text-[11px] text-blue-700 font-medium">Values populated from QR scan — fields are read-only</span>
+      </div>
+
+      <!-- Form -->
+      <form id="waste-dropoff-form" onsubmit="handleWasteFormSubmit(event)" class="space-y-4">
+        <div>
+          <label for="waste-type" class="block text-xs font-bold text-gray-700 mb-1.5">
+            Waste Type <span class="text-red-500">*</span>
+          </label>
+          <select id="waste-type" name="waste-type" required class="text-sm font-medium field-readonly" disabled>
+            <option value="Wet Waste / Food Waste" selected>🥗 Wet Waste / Food Waste (e.g., Cooked food, peels, vegetable/fruit scraps)</option>
+            <option value="Dry Waste / Recyclables">📦 Dry Waste / Recyclables (e.g., Paper, cardboard, packaging)</option>
+            <option value="Garden / Yard Waste">🍂 Garden / Yard Waste (e.g., Leaves, twigs, grass)</option>
+            <option value="Mixed Organic Waste">♻️ Mixed Organic Waste</option>
+          </select>
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <label for="waste-weight" class="block text-xs font-bold text-gray-700">
+              Weight (kg) <span class="text-red-500">*</span>
+            </label>
+            <span class="text-[11px] text-gray-400">From QR scan data</span>
+          </div>
+          <input type="number" id="waste-weight" name="waste-weight" step="0.1" min="0.1" max="50" required
+            placeholder="e.g. 1.5" class="text-sm font-semibold field-readonly" readonly />
+        </div>
+
+        <div class="pt-2 flex gap-3">
+          <button type="button" onclick="closeWasteFormModal()"
+            class="flex-1 py-3 rounded-xl border border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50 transition-colors">
+            Cancel
+          </button>
+          <button type="submit" id="submit-waste-btn"
+            class="btn-primary flex-1 py-3 rounded-xl text-white font-bold text-sm shadow-lg">
+            Confirm & Log →
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== REWARD MODAL ===== -->
+  <div id="reward-modal" role="dialog" aria-modal="true" aria-labelledby="reward-modal-title"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeRewardModal()"></div>
+    <div class="relative glass rounded-3xl p-7 max-w-sm w-full shadow-2xl text-center overflow-hidden"
+      style="background:rgba(255,255,255,0.95)">
+      <div id="confetti-container" class="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl"></div>
+      <div class="relative z-10">
+        <div class="text-6xl mb-3 animate-bounce inline-block" id="reward-emoji">🎉</div>
+        <h2 id="reward-modal-title" class="text-2xl font-black text-green-800 mb-1"
+          style="font-family:'Playfair Display',serif">Drop-Off
+          Logged!</h2>
+        <p class="text-gray-500 text-sm mb-5">Your kitchen scraps are on their way to becoming community gold.</p>
+        <div class="bg-green-50 rounded-2xl p-4 mb-5">
+          <div class="flex items-center justify-around">
+            <div class="text-center">
+              <div class="font-black text-2xl text-green-700 stat-number" id="modal-added-kg">+1.5</div>
+              <div class="text-xs text-gray-500 mt-0.5">kg added</div>
+            </div>
+            <div class="w-px h-10 bg-green-200"></div>
+            <div class="text-center">
+              <div class="font-black text-2xl text-green-700 stat-number" id="modal-total-kg">47.2</div>
+              <div class="text-xs text-gray-500 mt-0.5">total kg</div>
+            </div>
+            <div class="w-px h-10 bg-green-200"></div>
+            <div class="text-center">
+              <div class="font-black text-2xl text-amber-600 stat-number" id="modal-drops">24</div>
+              <div class="text-xs text-gray-500 mt-0.5">drop-offs</div>
+            </div>
+          </div>
+        </div>
+        <div id="milestone-badge"
+          class="hidden mb-5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-2xl px-4 py-3 flex items-center gap-3 text-left">
+          <span class="text-3xl">🏅</span>
+          <div>
+            <div class="font-bold text-white text-sm" id="badge-title">Milestone Unlocked!</div>
+            <div class="text-amber-100 text-xs" id="badge-desc">You've crossed 50 kg!</div>
+          </div>
+        </div>
+        <button onclick="closeRewardModal()"
+          class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-base">Awesome! 🌱</button>
+        <button onclick="closeRewardModal();showTab('harvest')"
+          class="mt-2.5 w-full py-2.5 rounded-xl text-green-700 font-medium text-sm hover:bg-green-50 transition-colors">Check
+          HarvestShare →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FACILITY MANAGER MODAL ===== -->
+  <div id="facility-modal" role="dialog" aria-modal="true" aria-labelledby="facility-modal-title"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeFacilityModal()"></div>
+    <div class="relative bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-green-700 flex items-center justify-center text-xl">⚙️</div>
+          <div>
+            <h2 id="facility-modal-title" class="font-bold text-green-900 text-lg">Facility Manager</h2>
+            <p class="text-xs text-gray-400">Building 7 – Admin Panel</p>
+          </div>
+        </div>
+        <button onclick="closeFacilityModal()"
+          class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors text-xl font-bold leading-none">×</button>
+      </div>
+
+      <div class="grid grid-cols-3 gap-3 mb-6">
+        <div class="bg-green-50 rounded-xl p-3 text-center">
+          <div class="font-black text-green-700 text-xl stat-number" id="fac-total">612.8</div>
+          <div class="text-xs text-gray-500">Total kg</div>
+        </div>
+        <div class="bg-amber-50 rounded-xl p-3 text-center">
+          <div class="font-black text-amber-700 text-xl">76.6%</div>
+          <div class="text-xs text-gray-500">Diversion Rate</div>
+        </div>
+        <div class="bg-yellow-50 rounded-xl p-3 text-center">
+          <div class="font-black text-yellow-700 text-xl">18</div>
+          <div class="text-xs text-gray-500">Active Residents</div>
+        </div>
+      </div>
+      <!-- Collector Waste Entry & QR Generator Section -->
+      <div class="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-4 mb-5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-xl">👷‍♂️</span>
+          <div>
+            <h3 class="font-bold text-amber-900 text-sm">Collector Waste Entry (Generate QR for Resident)</h3>
+            <p class="text-xs text-gray-500">Measure waste weight at collection and show QR for resident to scan</p>
+          </div>
+        </div>
+
+        <form id="collector-qr-form" onsubmit="handleCollectorQRSubmit(event)" class="space-y-3">
+          <div>
+            <label for="collector-waste-type" class="block text-xs font-semibold text-gray-700 mb-1">
+              Waste Type <span class="text-red-500">*</span>
+            </label>
+            <select id="collector-waste-type" name="collector-waste-type" required class="text-sm font-medium">
+              <option value="Wet Waste / Food Waste" selected>🥗 Wet Waste / Food Waste (e.g., Cooked food, peels, vegetable/fruit scraps)</option>
+              <option value="Dry Waste / Recyclables">📦 Dry Waste / Recyclables (e.g., Paper, cardboard, packaging)</option>
+              <option value="Garden / Yard Waste">🍂 Garden / Yard Waste (e.g., Leaves, twigs, grass)</option>
+              <option value="Mixed Organic Waste">♻️ Mixed Organic Waste</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="collector-waste-weight" class="block text-xs font-semibold text-gray-700 mb-1">
+              Weight (kg) <span class="text-red-500">*</span>
+            </label>
+            <input type="number" id="collector-waste-weight" name="collector-waste-weight" step="0.1" min="0.1" max="50" required placeholder="e.g. 2.5" value="2.5" class="text-sm font-semibold" />
+          </div>
+
+          <button type="submit" id="collector-gen-qr-btn" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold text-sm w-full py-2.5 rounded-xl shadow-md transition-all">
+            Generate QR for Resident →
+          </button>
+        </form>
+
+        <!-- Collector Generated QR Display Box -->
+        <div id="collector-qr-display-box" class="hidden mt-4 p-4 bg-white border border-amber-200 rounded-2xl text-center shadow-sm">
+          <div class="font-bold text-amber-900 text-xs mb-1.5 flex items-center justify-center gap-1.5">
+            <span>📲</span> Resident Scan QR Code
+          </div>
+          <p class="text-[11px] text-gray-500 mb-2.5">Ask resident to point their camera at this QR</p>
+          <div class="inline-block p-3 bg-amber-50/50 rounded-2xl border border-amber-200/60 shadow-inner">
+            <div id="collector-qrcode" class="flex items-center justify-center"></div>
+          </div>
+          <div id="collector-qr-details" class="text-xs font-semibold text-green-800 mt-2"></div>
+          <div class="mt-3 flex gap-2 justify-center">
+            <button type="button" onclick="testScanCollectorQR()" class="text-xs bg-green-600 hover:bg-green-500 text-white font-bold px-3.5 py-1.5 rounded-xl shadow transition-all">
+              📲 Simulate Resident Scan
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-green-50 rounded-2xl p-4 mb-5">
+        <h3 class="font-bold text-green-800 text-sm mb-4">Log Compost Batch Completion</h3>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs text-gray-500 mb-1 font-medium">Batch Date</label>
+            <input type="date" id="batch-date" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-gray-500 mb-1 font-medium">Waste In (kg)</label>
+              <input type="number" id="batch-in" placeholder="e.g. 45" min="0" />
+            </div>
+            <div>
+              <label class="block text-xs text-gray-500 mb-1 font-medium">Compost Out (kg)</label>
+              <input type="number" id="batch-out" placeholder="e.g. 13" min="0" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-500 mb-1 font-medium">Harvest Update</label>
+            <textarea id="batch-notes" placeholder="e.g. 15 bags organic fertilizer ready for pickup..." rows="2"
+              style="resize:none"></textarea>
+          </div>
+          <button onclick="logBatch()" class="btn-primary w-full py-3 rounded-xl text-white font-bold text-sm">Submit
+            Batch Log</button>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-green-800 text-sm mb-3">Recent Batch Logs</h3>
+        <div id="batch-log-list" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CLAIM MODAL ===== -->
+  <div id="claim-modal" role="dialog" aria-modal="true" aria-labelledby="claim-modal-title"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeClaimModal()"></div>
+    <div class="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center">
+      <div class="text-5xl mb-3" id="claim-emoji">🌿</div>
+      <h2 id="claim-modal-title" class="font-bold text-green-800 text-xl mb-1">Claim Submitted!</h2>
+      <p class="text-gray-500 text-sm mb-5" id="claim-desc">Your request has been noted. Pickup available Saturday 9–11
+        AM at Rooftop Garden.</p>
+      <div class="bg-green-50 rounded-xl p-3 mb-5 text-left text-sm space-y-1.5">
+        <div class="flex items-center gap-2 text-green-700"><span>📍</span><span>Rooftop Garden, Building 7</span></div>
+        <div class="flex items-center gap-2 text-green-700"><span>🕙</span><span>Saturday, 10:00 AM – 11:00 AM</span>
+        </div>
+        <div class="flex items-center gap-2 text-green-700"><span>🪪</span><span>Show Apt ID at pickup</span></div>
+      </div>
+      <button onclick="closeClaimModal()" class="btn-primary w-full py-3 rounded-xl text-white font-bold">Done!</button>
+    </div>
+  </div>
+
+  <!-- ===== OUR PROCESS MODAL ===== -->
+  <div id="process-modal" role="dialog" aria-modal="true" aria-labelledby="process-modal-title"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-3 md:p-4 hidden">
+    <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeProcessModal()"></div>
+    <div class="modal-panel relative bg-white rounded-3xl w-full max-w-4xl shadow-2xl max-h-[90vh] flex flex-col overflow-hidden">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-5 md:px-7 py-4 md:py-5 border-b border-gray-100 flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-green-700 flex items-center justify-center text-xl flex-shrink-0">🔄</div>
+          <div>
+            <h2 id="process-modal-title" class="font-bold text-green-900 text-lg leading-tight">Our Process</h2>
+            <p class="text-xs text-gray-400">From collection to community impact</p>
+          </div>
+        </div>
+        <button onclick="closeProcessModal()" aria-label="Close process details"
+          class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors text-xl font-bold leading-none flex-shrink-0">×</button>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="overflow-y-auto px-5 md:px-7 py-6 flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          <!-- Dry Waste -->
+          <div class="rounded-2xl border border-amber-200 bg-amber-50/60 overflow-hidden">
+            <div class="px-4 py-3.5 bg-amber-100/70 border-b border-amber-200 flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center text-lg flex-shrink-0">📦</span>
+              <div>
+                <h3 class="font-bold text-amber-900 text-sm leading-tight">Dry Waste</h3>
+                <p class="text-[11px] text-amber-700/80">Paper, plastic &amp; packaging</p>
+              </div>
+            </div>
+            <ol class="p-4 space-y-3">
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+                <span class="text-sm text-gray-700 pt-0.5">Collection</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                <span class="text-sm text-gray-700 pt-0.5">Sorting</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                <span class="text-sm text-gray-700 pt-0.5">Repair or repurpose usable items</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+                <span class="text-sm text-gray-700 pt-0.5">Reuse where possible</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
+                <span class="text-sm text-gray-700 pt-0.5">Dispose of non-reusable material responsibly</span>
+              </li>
+            </ol>
+          </div>
+
+          <!-- Wet Waste -->
+          <div class="rounded-2xl border border-green-200 bg-green-50/60 overflow-hidden">
+            <div class="px-4 py-3.5 bg-green-100/70 border-b border-green-200 flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-green-600 flex items-center justify-center text-lg flex-shrink-0">🥬</span>
+              <div>
+                <h3 class="font-bold text-green-900 text-sm leading-tight">Wet Waste</h3>
+                <p class="text-[11px] text-green-700/80">Food scraps &amp; organics</p>
+              </div>
+            </div>
+            <ol class="p-4 space-y-3">
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+                <span class="text-sm text-gray-700 pt-0.5">Collection</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                <span class="text-sm text-gray-700 pt-0.5">Separation from dry waste</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                <span class="text-sm text-gray-700 pt-0.5">Composting</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+                <span class="text-sm text-gray-700 pt-0.5">Conversion into useful compost/manure</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
+                <span class="text-sm text-gray-700 pt-0.5">Use or distribution of the compost</span>
+              </li>
+            </ol>
+          </div>
+
+          <!-- Recyclables -->
+          <div class="rounded-2xl border border-blue-200 bg-blue-50/60 overflow-hidden">
+            <div class="px-4 py-3.5 bg-blue-100/70 border-b border-blue-200 flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-lg flex-shrink-0">♻️</span>
+              <div>
+                <h3 class="font-bold text-blue-900 text-sm leading-tight">Recyclables</h3>
+                <p class="text-[11px] text-blue-700/80">Glass, metal &amp; more</p>
+              </div>
+            </div>
+            <ol class="p-4 space-y-3">
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+                <span class="text-sm text-gray-700 pt-0.5">Collection</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                <span class="text-sm text-gray-700 pt-0.5">Sorting by material</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                <span class="text-sm text-gray-700 pt-0.5">Cleaning and preparation</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+                <span class="text-sm text-gray-700 pt-0.5">Selling/sending materials to authorized recyclers</span>
+              </li>
+              <li class="process-step flex items-start gap-3">
+                <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
+                <span class="text-sm text-gray-700 pt-0.5">Recycling into new products</span>
+              </li>
+            </ol>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-5 md:px-7 py-4 border-t border-gray-100 flex-shrink-0 flex justify-end">
+        <button onclick="closeProcessModal()" class="btn-primary px-5 py-2.5 rounded-xl text-white font-semibold text-sm">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MEMBER (ADD/EDIT) MODAL ===== -->
+  <div id="member-modal" role="dialog" aria-modal="true" aria-labelledby="member-modal-title"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+    <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeMemberModal()"></div>
+    <div class="modal-panel relative bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-green-700 flex items-center justify-center text-xl">🤝</div>
+          <h2 id="member-modal-title" class="font-bold text-green-900 text-lg">Add Member</h2>
+        </div>
+        <button onclick="closeMemberModal()" aria-label="Close"
+          class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors text-xl font-bold leading-none">×</button>
+      </div>
+      <form id="member-form" onsubmit="saveMember(event)" class="space-y-3.5">
+        <input type="hidden" id="member-edit-id" value="" />
+        <div>
+          <label for="member-name" class="block text-xs font-semibold text-gray-700 mb-1">Name <span class="text-red-500">*</span></label>
+          <input type="text" id="member-name" required placeholder="e.g. Anita Rao" class="text-sm" />
+        </div>
+        <div>
+          <label for="member-role" class="block text-xs font-semibold text-gray-700 mb-1">Role / Designation <span class="text-red-500">*</span></label>
+          <input type="text" id="member-role" required placeholder="e.g. Composting Coordinator" class="text-sm" />
+        </div>
+        <div>
+          <label for="member-dept" class="block text-xs font-semibold text-gray-700 mb-1">Department <span class="text-gray-400 font-normal">(optional)</span></label>
+          <input type="text" id="member-dept" placeholder="e.g. Facility Management" class="text-sm" />
+        </div>
+        <div>
+          <label for="member-photo" class="block text-xs font-semibold text-gray-700 mb-1">Profile Photo URL <span class="text-gray-400 font-normal">(optional)</span></label>
+          <input type="url" id="member-photo" placeholder="https://…" class="text-sm" />
+        </div>
+        <div>
+          <label for="member-bio" class="block text-xs font-semibold text-gray-700 mb-1">Short Bio <span class="text-gray-400 font-normal">(optional)</span></label>
+          <textarea id="member-bio" rows="2" style="resize:none" placeholder="A line or two about this member…"></textarea>
+        </div>
+        <button type="submit" class="btn-primary w-full py-3 rounded-xl text-white font-bold text-sm mt-2" id="member-save-btn">Save Member</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Push Notification Banner -->
+  <div id="push-notification" class="push-notif" role="alert" aria-live="assertive">
+    <div class="bg-green-950 text-white rounded-2xl shadow-2xl p-4 flex items-start gap-3 border border-green-700/60"
+      style="backdrop-filter:blur(16px)">
+      <div id="push-icon" class="text-2xl flex-shrink-0 mt-0.5">🌱</div>
+      <div class="flex-1 min-w-0">
+        <div id="push-title" class="font-bold text-sm leading-tight">Your compost is ready!</div>
+        <div id="push-body" class="text-green-300 text-xs mt-1 leading-relaxed">Fresh produce & fertilizer bags are
+          available. Claim now!</div>
+      </div>
+      <div class="flex flex-col gap-1.5 flex-shrink-0 ml-1">
+        <button onclick="pushDeepLink()"
+          class="text-xs bg-green-500 hover:bg-green-400 active:bg-green-600 text-white px-3 py-1.5 rounded-lg font-bold transition-colors whitespace-nowrap">View
+          →</button>
+        <button onclick="dismissPush()"
+          class="text-xs text-green-400 hover:text-white px-3 py-1 transition-colors text-center">✕ Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-[200] hidden">
+    <div
+      class="bg-green-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-sm font-medium whitespace-nowrap">
+      <span id="toast-icon">✅</span>
+      <span id="toast-text">Action completed!</span>
+    </div>
+  </div>
+
+  <script>
+    // ─── ACCOUNTS ────────────────────────────
+    const ACCOUNTS = [
+      { apt: '7B', name: 'Pooja Singh', wing: 'B', kg: 47.2, drops: 24, tier: 'Champion', tierEmoji: '🏅', tierColor: 'text-rose-400', pin: '1234', emoji: '🥦', isManager: false },
+      { apt: '3A', name: 'Priya Mehta', wing: 'A', kg: 28.5, drops: 16, tier: 'Grower', tierEmoji: '🌱', tierColor: 'text-green-400', pin: '2345', emoji: '🍅', isManager: false },
+      { apt: '12C', name: 'Rohit Kumar', wing: 'C', kg: 12.1, drops: 8, tier: 'Sprouter', tierEmoji: '🌿', tierColor: 'text-gray-300', pin: '3456', emoji: '🥕', isManager: false },
+      { apt: 'MGR', name: 'Facility Manager', wing: '-', kg: 0, drops: 0, tier: 'Manager', tierEmoji: '⚙️', tierColor: 'text-blue-300', pin: 'admin', emoji: '🏢', isManager: true },
+    ];
+    let currentAccount = null;
+    let selectedAccountIndex = 0;
+
+    // ─── STATE ───────────────────────────────
+    const state = {
+      personalKg: 47.2,
+      buildingKg: 612.8,
+      dropCount: 24,
+      batchLogs: [
+        { date: '2026-08-10', inp: 45, out: 13.5, notes: 'Batch 1: 10 bags ready for distribution' },
+        { date: '2026-08-03', inp: 52, out: 15.6, notes: 'Batch 2: distributed to Wing A residents' },
+      ]
+    };
+
+    // ─── CENTRALIZED STATE → UI SYNC ─────────
+    function updateDashboard() {
+      const fertKg = Math.round(state.buildingKg * 0.3 * 10) / 10;
+
+      // ── Metric cards ──
+      const pkgEl = document.getElementById('personal-kg');
+      if (pkgEl) pkgEl.textContent = state.personalKg.toFixed(1);
+      const bkgEl = document.getElementById('building-kg');
+      if (bkgEl) bkgEl.textContent = state.buildingKg.toFixed(1);
+      const fkgEl = document.getElementById('fertilizer-kg');
+      if (fkgEl) fkgEl.textContent = fertKg.toFixed(1);
+
+      // ── Fertilizer formula tooltip ──
+      const formulaEl = document.getElementById('fertilizer-formula-example');
+      if (formulaEl) formulaEl.textContent = state.buildingKg.toFixed(1) + ' kg × 0.30 = ' + fertKg.toFixed(1) + ' kg';
+
+      // ── Hero ring + kg ──
+      const heroKg = document.getElementById('hero-kg');
+      if (heroKg) heroKg.textContent = state.personalKg.toFixed(1);
+      updateHeroRing();
+
+      // ── Greeting header month total ──
+      const greetTotal = document.getElementById('greeting-month-total');
+      if (greetTotal) greetTotal.textContent = state.personalKg.toFixed(1) + ' kg';
+
+      // ── Drop count ──
+      const dcEl = document.getElementById('drop-count');
+      if (dcEl) dcEl.textContent = state.dropCount;
+
+      // ── Participation progress ──
+      updatePersonalProgress();
+
+      // ── Profile dropdown stats ──
+      const pdKg = document.getElementById('pd-kg');
+      const pdDrops = document.getElementById('pd-drops');
+      if (pdKg) pdKg.textContent = state.personalKg.toFixed(1);
+      if (pdDrops) pdDrops.textContent = state.dropCount;
+
+      // ── Facility modal total ──
+      const facTotal = document.getElementById('fac-total');
+      if (facTotal) facTotal.textContent = state.buildingKg.toFixed(1);
+
+      // ── Community goal in leaderboard ──
+      renderLeaderboard();
+    }
+
+    // ─── TABS ────────────────────────────────
+    function showTab(name) {
+      // Close any open modals when navigating
+      ['reward-modal', 'facility-modal', 'claim-modal', 'waste-form-modal', 'process-modal', 'member-modal'].forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+      });
+      // Close profile dropdown
+      document.getElementById('profile-dropdown')?.classList.add('hidden');
+
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.add('hidden'));
+      document.getElementById('tab-' + name).classList.remove('hidden');
+      document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('text-white', 'bg-white/15'); b.classList.add('text-green-200'); });
+      const nb = document.getElementById('nav-' + name);
+      if (nb) { nb.classList.add('text-white', 'bg-white/15'); nb.classList.remove('text-green-200'); }
+      document.querySelectorAll('.mob-nav').forEach(b => { b.classList.remove('text-green-700'); b.classList.add('text-gray-400'); });
+      const mb = document.getElementById('mob-' + name);
+      if (mb) { mb.classList.add('text-green-700'); mb.classList.remove('text-gray-400'); }
+    }
+
+    // ─── LOGIN / LOGOUT ───────────────────────
+    function renderAccountGrid() {
+      const grid = document.getElementById('account-grid');
+      if (!grid) return;
+      grid.innerHTML = ACCOUNTS.map((acc, i) => `
+        <button class="account-chip ${i === selectedAccountIndex ? 'selected' : ''}" onclick="selectAccount(${i})">
+          <span class="text-2xl">${acc.emoji}</span>
+          <div>
+            <div class="font-bold text-white text-xs">${acc.name}</div>
+            <div class="text-green-400 text-xs">Apt ${acc.apt} · ${acc.tier}</div>
+          </div>
+        </button>`).join('');
+    }
+
+    function selectAccount(i) {
+      selectedAccountIndex = i;
+      renderAccountGrid();
+      document.getElementById('login-pin').focus();
+    }
+
+    function doLogin() {
+      const acc = ACCOUNTS[selectedAccountIndex];
+      const pin = document.getElementById('login-pin').value;
+      const errEl = document.getElementById('login-error');
+      if (pin !== acc.pin) {
+        errEl.classList.remove('hidden');
+        const pinEl = document.getElementById('login-pin');
+        pinEl.classList.add('login-err');
+        setTimeout(() => pinEl.classList.remove('login-err'), 400);
+        return;
+      }
+      errEl.classList.add('hidden');
+      currentAccount = acc;
+      // Seed state from account
+      state.personalKg = acc.kg;
+      state.dropCount = acc.drops;
+      // Update profile UI
+      applyAccountToUI(acc);
+      // Update greeting header
+      const greetTitle = document.getElementById('greeting-title');
+      const greetWing = document.getElementById('greeting-wing');
+      const hour = new Date().getHours();
+      const timeGreeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+      if (greetTitle) greetTitle.textContent = timeGreeting + ', ' + acc.name.split(' ')[0] + ' 👋';
+      if (greetWing) greetWing.textContent = 'Building 7 · Wing ' + acc.wing;
+      // Hide login screen
+      const ls = document.getElementById('login-screen');
+      ls.classList.add('fade-out');
+      setTimeout(() => ls.classList.add('hidden'), 480);
+      // Boot app
+      showTab('dashboard');
+      // QR scanner initializes lazily when modal is opened
+      renderActivityFeed();
+      renderHarvest();
+      renderMembers();
+      updateDashboard();
+      animateCounter('personal-kg', state.personalKg);
+      animateCounter('hero-kg', state.personalKg);
+      createFloatingLeaves();
+      setTimeout(() => {
+        document.querySelectorAll('.wing-bar').forEach(bar => {
+          const target = bar.style.width;
+          bar.style.width = '0%';
+          setTimeout(() => bar.style.width = target, 60);
+        });
+      }, 200);
+      showToast('👋', 'Welcome, ' + acc.name + '!');
+      // ── Trigger push notification 4 s after login (non-managers only) ──
+      if (!acc.isManager) {
+        setTimeout(() => {
+          showPush({
+            icon: '🌿',
+            title: 'Your scraps are now compost! 🎉',
+            body: 'Fresh herb bundles & fertilizer bags from Wing ' + acc.wing + ' are ready to claim this Saturday.',
+            tab: 'harvest'
+          });
+        }, 4000);
+      }
+    }
+
+    function applyAccountToUI(acc) {
+      const initial = acc.name.charAt(0).toUpperCase();
+      // Nav avatar
+      document.getElementById('profile-btn').textContent = initial;
+      // Dropdown header
+      document.getElementById('pd-name').textContent = acc.name;
+      document.getElementById('pd-apt').textContent = 'Apt ' + acc.apt + ' · Wing ' + acc.wing;
+      document.getElementById('pd-avatar').textContent = initial;
+      // Tier badge text
+      const tierName = document.getElementById('pd-tier');
+      if (tierName) tierName.textContent = acc.tier + ' Tier';
+      // Participation card
+      const partName = document.getElementById('part-name');
+      if (partName) partName.textContent = 'Apt ' + acc.apt + ' – ' + acc.name;
+      const partTier = document.getElementById('part-tier');
+      if (partTier) partTier.textContent = acc.tier;
+      // Dashboard metrics
+      const pkgEl = document.getElementById('personal-kg');
+      if (pkgEl) pkgEl.textContent = acc.kg.toFixed(1);
+      const fertEl = document.getElementById('fertilizer-kg');
+      if (fertEl) fertEl.textContent = (Math.round(state.buildingKg * 0.3 * 10) / 10).toFixed(1);
+      const dcEl = document.getElementById('drop-count');
+      if (dcEl) dcEl.textContent = acc.drops;
+      // Profile dropdown stats (immediate sync)
+      const pdKg = document.getElementById('pd-kg');
+      const pdDrops = document.getElementById('pd-drops');
+      if (pdKg) pdKg.textContent = acc.kg.toFixed(1);
+      if (pdDrops) pdDrops.textContent = acc.drops;
+    }
+
+    function doLogout() {
+      currentAccount = null;
+      document.getElementById('login-pin').value = '';
+      document.getElementById('login-error').classList.add('hidden');
+      const forgotSection = document.getElementById('forgot-pin-section');
+      if (forgotSection) forgotSection.classList.add('hidden');
+      const forgotRes = document.getElementById('forgot-pin-result');
+      if (forgotRes) forgotRes.classList.add('hidden');
+      const forgotUser = document.getElementById('forgot-username');
+      if (forgotUser) forgotUser.value = '';
+      selectedAccountIndex = 0;
+      renderAccountGrid();
+      renderMembers();
+      // Reset state
+      state.personalKg = ACCOUNTS[0].kg;
+      state.dropCount = ACCOUNTS[0].drops;
+      // Show login
+      const ls = document.getElementById('login-screen');
+      ls.classList.remove('hidden');
+      requestAnimationFrame(() => ls.classList.remove('fade-out'));
+      // Close dropdown
+      document.getElementById('profile-dropdown').classList.add('hidden');
+    }
+
+    // ─── FORGOT PIN FEATURE ────────────────────
+    function toggleForgotPin() {
+      const section = document.getElementById('forgot-pin-section');
+      if (!section) return;
+      const isHidden = section.classList.contains('hidden');
+      section.classList.toggle('hidden', !isHidden);
+      if (isHidden) {
+        const input = document.getElementById('forgot-username');
+        if (input) {
+          input.focus();
+        }
+      }
+    }
+
+    function findPin() {
+      const usernameInput = document.getElementById('forgot-username');
+      const resultEl = document.getElementById('forgot-pin-result');
+      if (!usernameInput || !resultEl) return;
+
+      const query = usernameInput.value.trim().toLowerCase();
+      if (!query) {
+        resultEl.className = 'text-xs text-amber-300 bg-amber-900/40 border border-amber-500/30 rounded-xl p-2.5 mt-2.5';
+        resultEl.innerHTML = '⚠️ Please enter a resident or manager name to search.';
+        resultEl.classList.remove('hidden');
+        return;
+      }
+
+      // Search ACCOUNTS array for exact or partial name match
+      const matchedIndex = ACCOUNTS.findIndex(acc =>
+        acc.name.toLowerCase() === query || acc.name.toLowerCase().includes(query)
+      );
+
+      if (matchedIndex !== -1) {
+        const matched = ACCOUNTS[matchedIndex];
+        resultEl.className = 'text-xs text-green-200 bg-green-950/70 border border-green-500/40 rounded-xl p-2.5 mt-2.5 shadow-inner';
+        resultEl.innerHTML = `
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <div>
+              <span class="font-bold text-white">${matched.emoji} ${matched.name}</span>
+              <span class="text-green-300/80 text-[11px] ml-1">(Apt ${matched.apt})</span>
+            </div>
+            <button type="button" onclick="selectAccount(${matchedIndex}); document.getElementById('login-pin').value='${matched.pin}'; document.getElementById('forgot-pin-section').classList.add('hidden');" 
+              class="text-[11px] bg-green-500 hover:bg-green-400 active:scale-95 text-white font-bold px-2.5 py-1 rounded-lg transition-all shadow">
+              Auto-fill PIN & Select
+            </button>
+          </div>
+          <div class="flex items-center gap-2 text-green-300">
+            <span>PIN:</span>
+            <span class="font-mono text-sm font-black text-amber-300 bg-black/40 px-2.5 py-0.5 rounded border border-amber-400/40 tracking-wider select-all">${matched.pin}</span>
+          </div>
+        `;
+        resultEl.classList.remove('hidden');
+      } else {
+        const safeQuery = query.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        resultEl.className = 'text-xs text-rose-300 bg-rose-950/60 border border-rose-500/40 rounded-xl p-2.5 mt-2.5';
+        resultEl.innerHTML = `❌ No account found for "<b>${safeQuery}</b>". Please check the spelling.`;
+        resultEl.classList.remove('hidden');
+      }
+    }
+
+    // Spawn login screen leaves
+    function createLoginLeaves() {
+      const c = document.getElementById('login-leaves');
+      if (!c) return;
+      const leaves = ['🍃', '🌿', '🍂', '🌱', '☘️'];
+      for (let i = 0; i < 14; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'floating-leaf';
+        leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+        leaf.style.cssText = `left:${Math.random() * 100}%;bottom:-20px;font-size:${0.8 + Math.random() * 0.9}rem;animation-duration:${7 + Math.random() * 10}s;animation-delay:${Math.random() * 8}s;`;
+        c.appendChild(leaf);
+      }
+    }
+
+    // ─── PROFILE DROPDOWN ───�    // ─── QR SCANNER MODULE ────────────────────
+    // ─── PROFILE DROPDOWN ─────────────────────
+    function toggleProfileDropdown() {
+      const dd = document.getElementById('profile-dropdown');
+      const isHidden = dd.classList.contains('hidden');
+      dd.classList.toggle('hidden', !isHidden);
+      // sync live stats
+      const pdKg = document.getElementById('pd-kg');
+      const pdDrops = document.getElementById('pd-drops');
+      if (pdKg) pdKg.textContent = state.personalKg.toFixed(1);
+      if (pdDrops) pdDrops.textContent = state.dropCount;
+    }
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const wrapper = document.getElementById('profile-wrapper');
+      if (wrapper && !wrapper.contains(e.target)) {
+        document.getElementById('profile-dropdown').classList.add('hidden');
+      }
+    });
+
+    // ─── QR SCANNER MODULE ────────────────────
+        let html5QrcodeScanner = null;
+    let html5QrcodeInstance = null; // for file-based scan
+    let lastScanTimestamp = 0;
+    let _qrScannerStarted = false;
+    const DROP_AMOUNTS = [0.8, 1.0, 1.2, 1.5, 1.8, 2.0, 2.2];
+
+    // ── Parse decoded QR text into { binName, parsedWeight } ──
+    function parseQrPayload(decodedText) {
+      let parsedWeight = null;
+      let binName = 'Smart Bin Station';
+      try {
+        const data = JSON.parse(decodedText);
+        if (data && typeof data.weight === 'number') parsedWeight = data.weight;
+        if (data && data.bin) binName = `Smart Bin #${data.bin}`;
+      } catch (e) {
+        const match = decodedText.match(/(\d+(\.\d+)?)/);
+        if (match) {
+          const w = parseFloat(match[1]);
+          if (!isNaN(w) && w > 0 && w <= 50) parsedWeight = w;
+        }
+        if (decodedText.length > 0 && decodedText.length < 35) binName = decodedText;
+      }
+      return { binName, parsedWeight };
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+      const now = Date.now();
+      if (now - lastScanTimestamp < 2500) return; // debounce
+      lastScanTimestamp = now;
+      console.log('Scan matched:', decodedText, decodedResult);
+      const { binName, parsedWeight } = parseQrPayload(decodedText);
+      // Auto-reset scanner after successful scan
+      resetQrScanner();
+      closeQrScannerModal();
+      showToast('📷', 'QR Scanned! Confirm waste details.');
+      openWasteFormModal(binName, parsedWeight);
+    }
+
+    function onScanFailure(error) { /* frame-by-frame search */ }
+
+    // ── Init: no-op; scanner only starts when modal opens ──
+    function initQrScanner() { /* deferred to openQrScannerModal */ }
+
+    // ── Start camera scanner inside the modal ──
+    function startCameraScanner() {
+      if (_qrScannerStarted || typeof Html5QrcodeScanner === 'undefined') return;
+      const readerEl = document.getElementById('reader');
+      if (!readerEl) return;
+      readerEl.innerHTML = '';
+      html5QrcodeScanner = new Html5QrcodeScanner(
+        'reader',
+        { fps: 10, qrbox: { width: 200, height: 200 }, aspectRatio: 1.0, showTorchButtonIfSupported: true },
+        false
+      );
+      html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+      _qrScannerStarted = true;
+    }
+
+    // ── Stop camera scanner ──
+    function stopCameraScanner() {
+      if (html5QrcodeScanner) {
+        try { html5QrcodeScanner.clear(); } catch (e) {}
+        html5QrcodeScanner = null;
+      }
+      _qrScannerStarted = false;
+      const readerEl = document.getElementById('reader');
+      if (readerEl) readerEl.innerHTML = '';
+    }
+
+    // ── Reset scanner (called after successful scan) ──
+    function resetQrScanner() {
+      stopCameraScanner();
+      resetQrUpload();
+    }
+
+    // ── Open QR scanner modal ──
+    function openQrScannerModal() {
+      document.getElementById('qr-scanner-modal')?.classList.remove('hidden');
+      switchQrTab('camera');
+      setTimeout(startCameraScanner, 180); // wait for modal animation
+    }
+
+    // ── Close QR scanner modal ──
+    function closeQrScannerModal() {
+      stopCameraScanner();
+      document.getElementById('qr-scanner-modal')?.classList.add('hidden');
+      const cameraStatus = document.getElementById('qr-camera-status');
+      if (cameraStatus) cameraStatus.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Point camera at a bin QR code';
+    }
+
+    // ── Switch camera / upload tabs ──
+    function switchQrTab(tab) {
+      const camPanel = document.getElementById('qr-panel-camera');
+      const upPanel = document.getElementById('qr-panel-upload');
+      const camTab = document.getElementById('qr-tab-camera');
+      const upTab = document.getElementById('qr-tab-upload');
+      if (tab === 'camera') {
+        camPanel?.classList.remove('hidden');
+        upPanel?.classList.add('hidden');
+        camTab?.classList.add('bg-white', 'text-green-700', 'shadow-sm');
+        camTab?.classList.remove('text-gray-500');
+        upTab?.classList.remove('bg-white', 'text-green-700', 'shadow-sm');
+        upTab?.classList.add('text-gray-500');
+        setTimeout(startCameraScanner, 100);
+      } else {
+        stopCameraScanner();
+        camPanel?.classList.add('hidden');
+        upPanel?.classList.remove('hidden');
+        upTab?.classList.add('bg-white', 'text-blue-700', 'shadow-sm');
+        upTab?.classList.remove('text-gray-500');
+        camTab?.classList.remove('bg-white', 'text-green-700', 'shadow-sm');
+        camTab?.classList.add('text-gray-500');
+      }
+    }
+
+    // ── Handle local image file upload ──
+    async function handleQrFileUpload(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const previewWrap = document.getElementById('qr-upload-preview');
+      const previewImg = document.getElementById('qr-preview-img');
+      const statusEl = document.getElementById('qr-upload-status');
+      // Show preview
+      const objectUrl = URL.createObjectURL(file);
+      previewImg.src = objectUrl;
+      previewWrap?.classList.remove('hidden');
+      if (statusEl) statusEl.textContent = 'Scanning image…';
+      // Scan using Html5Qrcode
+      if (typeof Html5Qrcode === 'undefined') {
+        if (statusEl) statusEl.textContent = '⚠️ QR library not available.';
+        return;
+      }
+      try {
+        if (!html5QrcodeInstance) html5QrcodeInstance = new Html5Qrcode('qr-file-scanner-scratch');
+        const result = await html5QrcodeInstance.scanFile(file, false);
+        if (statusEl) statusEl.innerHTML = '<span style="color:#16a34a">✅ QR found! Opening form…</span>';
+        URL.revokeObjectURL(objectUrl);
+        // Auto-reset upload panel then process
+        setTimeout(() => {
+          resetQrUpload();
+          closeQrScannerModal();
+        }, 800);
+        const { binName, parsedWeight } = parseQrPayload(result);
+        openWasteFormModal(binName, parsedWeight);
+        showToast('🖼', 'QR image scanned! Confirm waste details.');
+      } catch (err) {
+        if (statusEl) statusEl.innerHTML = '<span style="color:#dc2626">❌ No QR code found in image. Try another.</span>';
+        console.warn('QR file scan error:', err);
+      }
+    }
+
+    // ── Reset upload panel ──
+    function resetQrUpload() {
+      const previewWrap = document.getElementById('qr-upload-preview');
+      const previewImg = document.getElementById('qr-preview-img');
+      const fileInput = document.getElementById('qr-file-input');
+      const statusEl = document.getElementById('qr-upload-status');
+      if (previewWrap) previewWrap.classList.add('hidden');
+      if (previewImg) previewImg.src = '';
+      if (fileInput) fileInput.value = '';
+      if (statusEl) statusEl.textContent = 'Scanning image…';
+    }
+
+    // ─── WASTE LOGGING MODAL HANDLERS ─────────
+    function openWasteFormModal(binLabel, prefilledWeight) {
+      const modal = document.getElementById('waste-form-modal');
+      const binEl = document.getElementById('scanned-bin-label');
+      const weightInput = document.getElementById('waste-weight');
+      const wasteTypeSelect = document.getElementById('waste-type');
+
+      if (binEl && binLabel) {
+        binEl.textContent = binLabel;
+      } else if (binEl) {
+        const wing = currentAccount ? currentAccount.wing : 'B';
+        binEl.textContent = `Smart Bin #${wing}-02 (Wing ${wing} Station)`;
+      }
+
+      // Pre-fill weight with scanned value or a realistic random weight
+      const initialWeight = (typeof prefilledWeight === 'number' && prefilledWeight > 0)
+        ? prefilledWeight
+        : DROP_AMOUNTS[Math.floor(Math.random() * DROP_AMOUNTS.length)];
+
+      if (weightInput) {
+        weightInput.value = initialWeight.toFixed(1);
+      }
+      if (wasteTypeSelect) {
+        wasteTypeSelect.selectedIndex = 0;
+      }
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          if (weightInput) {
+            weightInput.focus();
+            weightInput.select();
+          }
+        }, 150);
+      }
+    }
+
+    function closeWasteFormModal() {
+      const modal = document.getElementById('waste-form-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function handleWasteFormSubmit(event) {
+      if (event) event.preventDefault();
+      const weightInput = document.getElementById('waste-weight');
+      const typeSelect = document.getElementById('waste-type');
+
+      const weight = parseFloat(weightInput?.value) || 0;
+      const wasteType = typeSelect?.value || 'Mixed Organic Waste';
+
+      if (weight <= 0) {
+        showToast('⚠️', 'Please enter a valid waste weight.');
+        return;
+      }
+
+      closeWasteFormModal();
+      logDropOff(weight, wasteType);
+    }
+
+    function logDropOff(customWeight, wasteType) {
+      const added = (typeof customWeight === 'number' && !isNaN(customWeight) && customWeight > 0)
+        ? Math.round(customWeight * 10) / 10
+        : DROP_AMOUNTS[Math.floor(Math.random() * DROP_AMOUNTS.length)];
+      const prevKg = state.personalKg;
+      state.personalKg = Math.round((state.personalKg + added) * 10) / 10;
+      state.buildingKg = Math.round((state.buildingKg + added) * 10) / 10;
+      state.dropCount++;
+
+      // ── Update current user's wing in WINGS dataset ──
+      if (currentAccount) {
+        const userWing = WINGS.find(w => w.name === 'Wing ' + currentAccount.wing);
+        if (userWing) {
+          userWing.kg = Math.round((userWing.kg + added) * 10) / 10;
+        }
+        // Re-sort wings by kg descending and reassign badges/emojis
+        WINGS.sort((a, b) => b.kg - a.kg);
+        const badges = ['rank-gold', 'rank-silver', 'rank-bronze', 'bg-gray-200'];
+        const emojis = ['🥇', '🥈', '🥉', '4️⃣'];
+        WINGS.forEach((w, idx) => { w.badge = badges[idx]; w.emoji = emojis[idx]; });
+      }
+
+      // ── Centralized dashboard sync ──
+      updateDashboard();
+      animateCounter('personal-kg', state.personalKg);
+      animateCounter('building-kg', state.buildingKg);
+      animateCounter('fertilizer-kg', Math.round(state.buildingKg * 0.3 * 10) / 10);
+      animateCounter('hero-kg', state.personalKg);
+
+      addActivityItem(added, wasteType);
+      openRewardModal(added, prevKg);
+    }
+
+    // ─── FORM 1: QR CODE GENERATION ────────────
+    let latestGeneratedQRPayload = '';
+
+    function handleGenerateQR(event) {
+      if (event) event.preventDefault();
+      const typeSelect = document.getElementById('gen-waste-type');
+      const weightInput = document.getElementById('gen-waste-weight');
+      const container = document.getElementById('qrcode-display');
+      const resultCard = document.getElementById('generated-qr-result');
+      const payloadEl = document.getElementById('qr-payload-text');
+
+      const wasteType = typeSelect ? typeSelect.value : 'Mixed Organic Waste';
+      const weight = parseFloat(weightInput ? weightInput.value : 0) || 1.8;
+
+      if (weight <= 0) {
+        showToast('⚠️', 'Please enter a valid weight in kg.');
+        return;
+      }
+
+      const wing = currentAccount ? currentAccount.wing : 'B';
+      const payloadObj = {
+        bin: `${wing}-01`,
+        type: wasteType,
+        weight: weight,
+        created: new Date().toLocaleTimeString()
+      };
+
+      latestGeneratedQRPayload = JSON.stringify(payloadObj);
+
+      if (container) {
+        container.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(container, {
+            text: latestGeneratedQRPayload,
+            width: 150,
+            height: 150,
+            colorDark: '#052e16',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        } else {
+          container.innerHTML = `<div class="p-4 bg-gray-100 rounded-xl text-xs text-gray-600 font-mono">${latestGeneratedQRPayload}</div>`;
+        }
+      }
+
+      if (payloadEl) {
+        payloadEl.textContent = `${wasteType} · ${weight.toFixed(1)} kg (Smart Bin #${wing}-01)`;
+      }
+
+      if (resultCard) {
+        resultCard.classList.remove('hidden');
+      }
+
+      showToast('✅', 'QR Code generated! Point camera or tap Simulate Scan.');
+    }
+
+    function testScanGeneratedQR() {
+      if (!latestGeneratedQRPayload) {
+        showToast('⚠️', 'Please generate a QR code first.');
+        return;
+      }
+      onScanSuccess(latestGeneratedQRPayload, { source: 'simulated-generated-qr' });
+    }
+
+    // ─── FORM 2: UPDATE LOGIN CODE (PIN) ────────
+    function handleUpdateLoginCode(event) {
+      if (event) event.preventDefault();
+      const codeInput = document.getElementById('new-login-code');
+      const resultEl = document.getElementById('login-code-update-result');
+      if (!codeInput) return;
+
+      const newCode = codeInput.value.trim();
+
+      if (!newCode || newCode.length < 3) {
+        if (resultEl) {
+          resultEl.className = 'text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-3';
+          resultEl.innerHTML = '⚠️ Please enter a valid PIN (at least 3 characters).';
+          resultEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const activeName = currentAccount ? currentAccount.name : ACCOUNTS[0].name;
+
+      // Update active session
+      if (currentAccount) {
+        currentAccount.pin = newCode;
+      }
+
+      // Update matching entry in ACCOUNTS list
+      const matched = ACCOUNTS.find(acc => acc.name === activeName);
+      if (matched) {
+        matched.pin = newCode;
+      }
+
+      codeInput.value = '';
+
+      if (resultEl) {
+        resultEl.className = 'text-xs text-green-800 bg-green-50 border border-green-200 rounded-xl p-3 shadow-inner';
+        resultEl.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-base">✅</span>
+            <div>
+              <div class="font-bold text-green-900">Login Code Updated!</div>
+              <div class="text-green-700 mt-0.5">New PIN for <b>${activeName}</b>: <span class="font-mono font-bold bg-white px-2 py-0.5 rounded border border-green-300">${newCode}</span></div>
+            </div>
+          </div>
+        `;
+        resultEl.classList.remove('hidden');
+      }
+
+      showToast('🔑', 'Login code updated successfully!');
+    }
+
+    // ─── COLLECTOR QR CODE GENERATOR ──────────
+    let latestCollectorQRPayload = '';
+
+    function handleCollectorQRSubmit(event) {
+      if (event) event.preventDefault();
+      const typeSelect = document.getElementById('collector-waste-type');
+      const weightInput = document.getElementById('collector-waste-weight');
+      const container = document.getElementById('collector-qrcode');
+      const displayBox = document.getElementById('collector-qr-display-box');
+      const detailsEl = document.getElementById('collector-qr-details');
+
+      const wasteType = typeSelect ? typeSelect.value : 'Mixed Organic Waste';
+      const weight = parseFloat(weightInput ? weightInput.value : 0) || 2.5;
+
+      if (weight <= 0) {
+        showToast('⚠️', 'Please enter a valid weight in kg.');
+        return;
+      }
+
+      const payload = {
+        bin: 'Collector-Doorstep-Station',
+        type: wasteType,
+        weight: weight,
+        collector: 'Facility Staff',
+        timestamp: new Date().toISOString()
+      };
+
+      latestCollectorQRPayload = JSON.stringify(payload);
+
+      if (container) {
+        container.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(container, {
+            text: latestCollectorQRPayload,
+            width: 150,
+            height: 150,
+            colorDark: '#14532d',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        } else {
+          container.innerHTML = `<div class="p-4 bg-gray-100 rounded-xl text-xs text-gray-600 font-mono">${latestCollectorQRPayload}</div>`;
+        }
+      }
+
+      if (detailsEl) {
+        detailsEl.textContent = `${wasteType} · ${weight.toFixed(1)} kg`;
+      }
+
+      if (displayBox) {
+        displayBox.classList.remove('hidden');
+      }
+
+      showToast('✅', 'QR Code generated for resident to scan!');
+    }
+
+    function testScanCollectorQR() {
+      if (!latestCollectorQRPayload) {
+        showToast('⚠️', 'Please generate a collector QR first.');
+        return;
+      }
+      closeFacilityModal();
+      onScanSuccess(latestCollectorQRPayload, { source: 'collector-portal' });
+    }
+
+    // ─── COUNTER ANIM ─────────────────────────
+    function animateCounter(id, target) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const start = parseFloat(el.textContent.replace('+', '')) || 0;
+      const dur = 800; const t0 = performance.now();
+      el.classList.add('counter-animate');
+      setTimeout(() => el.classList.remove('counter-animate'), 400);
+      function tick(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = (start + (target - start) * e).toFixed(1);
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toFixed(1);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function updateDropCount() {
+      const el = document.getElementById('drop-count');
+      if (el) { el.textContent = state.dropCount; el.classList.add('counter-animate'); setTimeout(() => el.classList.remove('counter-animate'), 400); }
+    }
+
+    function updateHeroRing() {
+      const pct = Math.min(state.personalKg / 60, 1);
+      const ring = document.getElementById('hero-ring');
+      if (ring) ring.style.strokeDashoffset = 314 - (314 * pct);
+    }
+
+    function updatePersonalProgress(prevKg) {
+      const GOAL = 60;
+      const pct = Math.min((state.personalKg / GOAL) * 100, 100);
+      const bar = document.getElementById('personal-progress-bar');
+      const lbl = document.getElementById('progress-pct');
+      const kgLbl = document.getElementById('progress-label');
+      const remLbl = document.getElementById('progress-remaining');
+      if (bar) bar.style.width = pct.toFixed(1) + '%';
+      if (lbl) lbl.textContent = Math.round(pct) + '%';
+      if (kgLbl) kgLbl.textContent = state.personalKg.toFixed(1) + ' kg / ' + GOAL + ' kg goal';
+      if (remLbl) {
+        const rem = Math.max(0, GOAL - state.personalKg);
+        remLbl.textContent = rem > 0 ? '+' + rem.toFixed(1) + ' kg to go' : '🎉 Goal reached!';
+      }
+    }
+
+    // ─── ACTIVITY FEED ────────────────────────
+    const ACTIVITY_SEED = [
+      { user: 'Wing C – Apt 12C', action: 'logged 2.0 kg', icon: '🥕', time: '2m ago' },
+      { user: 'Wing A – Apt 3A', action: 'logged 1.2 kg', icon: '🍌', time: '5m ago' },
+      { user: 'Wing B – Apt 7B', action: 'claimed Herb Bundle', icon: '🌿', time: '9m ago' },
+      { user: 'Wing A – Apt 5A', action: 'logged 0.8 kg', icon: '🥦', time: '13m ago' },
+      { user: 'Wing D – Apt 21D', action: 'logged 1.5 kg', icon: '🍅', time: '18m ago' },
+    ];
+    function renderActivityFeed() {
+      const feed = document.getElementById('activity-feed');
+      if (!feed) return;
+      feed.innerHTML = ACTIVITY_SEED.map(a => `
+    <li class="flex items-center gap-3 px-5 py-3 hover:bg-green-50 transition-colors">
+      <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center text-lg flex-shrink-0">${a.icon}</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-xs font-semibold text-gray-700 truncate">${a.user}</div>
+        <div class="text-xs text-gray-400">${a.action}</div>
+      </div>
+      <span class="text-xs text-gray-300 flex-shrink-0">${a.time}</span>
+    </li>`).join('');
+    }
+    function addActivityItem(kg, wasteType) {
+      const feed = document.getElementById('activity-feed');
+      if (!feed) return;
+      const icons = ['🥕', '🍌', '🥦', '🍅', '🥒', '🍊', '🥑'];
+      const icon = icons[Math.floor(Math.random() * icons.length)];
+      const label = currentAccount
+        ? `Wing ${currentAccount.wing} – Apt ${currentAccount.apt} (You)`
+        : 'Wing B – Apt 7B (You)';
+      const typeLabel = wasteType ? ` · ${wasteType}` : '';
+      const li = document.createElement('li');
+      li.className = 'flex items-center gap-3 px-5 py-3 bg-green-50 transition-colors border-l-4 border-green-400';
+      li.innerHTML = `
+    <div class="w-9 h-9 rounded-xl bg-green-200 flex items-center justify-center text-lg flex-shrink-0">${icon}</div>
+    <div class="flex-1 min-w-0">
+      <div class="text-xs font-semibold text-green-700 truncate">${label}</div>
+      <div class="text-xs text-gray-500">logged ${kg} kg${typeLabel} ✨</div>
+    </div>
+    <span class="text-xs text-green-600 flex-shrink-0 font-bold">Now</span>`;
+      feed.insertBefore(li, feed.firstChild);
+      if (feed.children.length > 6) feed.removeChild(feed.lastChild);
+      setTimeout(() => { li.classList.remove('bg-green-50', 'border-l-4', 'border-green-400'); }, 4000);
+    }
+
+    // ─── REWARD MODAL ─────────────────────────
+    function openRewardModal(added, prevKg) {
+      document.getElementById('modal-added-kg').textContent = '+' + added;
+      document.getElementById('modal-total-kg').textContent = state.personalKg.toFixed(1);
+      document.getElementById('modal-drops').textContent = state.dropCount;
+      const badge = document.getElementById('milestone-badge');
+      if (prevKg < 50 && state.personalKg >= 50) {
+        badge.classList.remove('hidden'); badge.classList.add('flex');
+        document.getElementById('badge-title').textContent = '🎯 50 kg Milestone!';
+        document.getElementById('badge-desc').textContent = "You've diverted 50 kg! Champion tier maintained.";
+        document.getElementById('reward-emoji').textContent = '🏅';
+      } else if (state.dropCount % 10 === 0) {
+        badge.classList.remove('hidden'); badge.classList.add('flex');
+        document.getElementById('badge-title').textContent = `🔥 ${state.dropCount} Drop-offs!`;
+        document.getElementById('badge-desc').textContent = `A perfect ${state.dropCount} drop-offs — you're on a roll!`;
+        document.getElementById('reward-emoji').textContent = '🔥';
+      } else {
+        badge.classList.add('hidden'); badge.classList.remove('flex');
+        document.getElementById('reward-emoji').textContent = '🎉';
+      }
+      document.getElementById('reward-modal').classList.remove('hidden');
+      launchConfetti();
+    }
+    function closeRewardModal() { document.getElementById('reward-modal').classList.add('hidden'); }
+
+    // ─── CONFETTI ─────────────────────────────
+    function launchConfetti() {
+      const c = document.getElementById('confetti-container');
+      c.innerHTML = '';
+      const colors = ['#22c55e', '#4ade80', '#86efac', '#fbbf24', '#f59e0b', '#fcd34d', '#a67c52', '#d4b896', '#fff'];
+      for (let i = 0; i < 45; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-piece';
+        const size = 4 + Math.random() * 8;
+        p.style.cssText = `left:${Math.random() * 100}%;top:-10px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random() * colors.length)]};border-radius:${Math.random() > .5 ? '50%' : '2px'};animation-duration:${0.8 + Math.random() * 1.6}s;animation-delay:${Math.random() * 0.4}s;`;
+        c.appendChild(p);
+      }
+      setTimeout(() => { c.innerHTML = ''; }, 3000);
+    }
+
+    // ─── LEADERBOARD ──────────────────────────
+    const WINGS = [
+      { name: 'Wing A', kg: 182.5, goal: 200, badge: 'rank-gold', emoji: '🥇', residents: 6, trend: '+3.2', isYou: false },
+      { name: 'Wing B', kg: 166.3, goal: 200, badge: 'rank-silver', emoji: '🥈', residents: 5, trend: '+2.8', isYou: true },
+      { name: 'Wing C', kg: 142.7, goal: 200, badge: 'rank-bronze', emoji: '🥉', residents: 6, trend: '+1.9', isYou: false },
+      { name: 'Wing D', kg: 121.3, goal: 200, badge: 'bg-gray-200', emoji: '4️⃣', residents: 4, trend: '+1.1', isYou: false },
+    ];
+    function renderLeaderboard() {
+      const list = document.getElementById('leaderboard-list');
+      if (!list) return;
+
+      // ── Update community goal banner ──
+      const commKg = WINGS.reduce((s, w) => s + w.kg, 0);
+      const COMM_GOAL = 800;
+      const commPct = Math.min((commKg / COMM_GOAL) * 100, 100);
+      const commKgEl = document.getElementById('community-kg');
+      const commPctEl = document.getElementById('community-pct');
+      const commBar = document.getElementById('community-goal-bar');
+      if (commKgEl) commKgEl.textContent = commKg.toFixed(1);
+      if (commPctEl) commPctEl.textContent = commPct.toFixed(1) + '% complete — ' + Math.max(0, COMM_GOAL - commKg).toFixed(1) + ' kg to go!';
+      if (commBar) commBar.style.width = commPct.toFixed(1) + '%';
+
+      // ── Update "Your Wing" panel ──
+      if (currentAccount && currentAccount.wing !== '-') {
+        const myWing = WINGS.find(w => w.name === 'Wing ' + currentAccount.wing);
+        const myRank = myWing ? WINGS.indexOf(myWing) + 1 : null;
+        const leader = WINGS[0];
+        const gap = myWing && leader ? (leader.kg - myWing.kg).toFixed(1) : '?';
+        if (myWing) {
+          const pct = Math.round((myWing.kg / myWing.goal) * 100);
+          document.getElementById('your-wing-title').textContent = "You're in " + myWing.name;
+          document.getElementById('your-wing-label').textContent = myWing.name + ' Progress to Goal (' + myWing.goal + ' kg)';
+          document.getElementById('your-wing-pct').textContent = pct + '%';
+          document.getElementById('your-wing-bar').style.width = pct + '%';
+          if (myRank === 1) {
+            document.getElementById('your-wing-gap').textContent = '🌟 Leading the board!';
+          } else {
+            document.getElementById('your-wing-gap').textContent = myRank + ' place – ' + gap + ' kg behind ' + leader.name;
+          }
+        }
+      }
+
+      list.innerHTML = WINGS.map(w => {
+        const pct = Math.round((w.kg / w.goal) * 100);
+        return `<div class="bg-white rounded-2xl p-4 shadow-md card-hover ${w.isYou ? 'ring-2 ring-green-400 ring-offset-2' : ''}">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl ${w.badge} flex items-center justify-center text-2xl shadow">${w.emoji}</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="font-bold text-gray-800">${w.name}</span>
+            ${w.isYou ? '<span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">You</span>' : ''}
+            <span class="ml-auto text-xs text-green-600 font-semibold bg-green-50 px-2 py-0.5 rounded-full">${w.trend} kg/day</span>
+          </div>
+          <div class="flex items-center justify-between mt-1">
+            <span class="text-sm text-gray-500">${w.residents} residents</span>
+            <span class="text-sm font-bold text-green-700">${w.kg} <span class="text-gray-400 font-normal">/ ${w.goal} kg</span></span>
+          </div>
+          <div class="mt-2 h-2.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full progress-bar rounded-full wing-bar" style="width:${pct}%"></div>
+          </div>
+          <div class="text-xs text-gray-400 mt-1">${pct}% of goal</div>
+        </div>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    // ─── HARVEST CATALOG ──────────────────────
+    const HARVEST_ITEMS = [
+      { name: 'Organic Fertilizer Bag', emoji: '🪣', qty: 8, unit: '2 kg bag', tier: 'Sprouter', tierBg: 'bg-gray-500', desc: 'Premium compost from Building 7\'s own bins. Rich in nutrients for your balcony garden.', minKg: 5 },
+      { name: 'Fresh Herb Bundle', emoji: '🌿', qty: 12, unit: 'bunch', tier: 'Grower', tierBg: 'bg-green-500', desc: 'Freshly harvested basil, mint & coriander from the rooftop garden. Picked this morning!', minKg: 20 },
+      { name: 'Cherry Tomatoes', emoji: '🍅', qty: 6, unit: '250g pack', tier: 'Grower', tierBg: 'bg-green-500', desc: 'Vine-ripened cherry tomatoes grown with community compost. Limited stock!', minKg: 20 },
+      { name: 'Premium Compost Kit', emoji: '🧪', qty: 4, unit: 'full kit', tier: 'Champion', tierBg: 'bg-amber-500', desc: 'Full home composting starter kit with bokashi bucket, activator & guide booklet.', minKg: 40 },
+      { name: 'Microgreens Pack', emoji: '🥗', qty: 9, unit: 'tray', tier: 'Sprouter', tierBg: 'bg-gray-500', desc: 'Nutritious mix of sunflower, radish & pea shoots. Ready-to-eat microgreens.', minKg: 5 },
+      { name: 'Garden Voucher ₹200', emoji: '🎟️', qty: 3, unit: '₹200 voucher', tier: 'Champion', tierBg: 'bg-amber-500', desc: 'Redeemable at the community garden shop for seeds, pots, soil & more. Champions only!', minKg: 40 },
+    ];
+    function renderHarvest() {
+      const cat = document.getElementById('harvest-catalog');
+      if (!cat) return;
+      cat.innerHTML = HARVEST_ITEMS.map((item, i) => {
+        const ok = state.personalKg >= item.minKg;
+        const outOfStock = item.qty <= 0;
+        const stockLabel = outOfStock
+          ? '<div class="absolute top-3 right-3 bg-gray-200 text-gray-500 text-xs px-2 py-0.5 rounded-full font-semibold">Out of Stock</div>'
+          : item.qty <= 4 ? '<div class="absolute top-3 right-3 bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full font-semibold">Low Stock</div>' : '';
+        let actionEl;
+        if (outOfStock) {
+          actionEl = `<div class="w-full py-2.5 rounded-xl bg-gray-100 text-gray-400 font-medium text-sm text-center">🚫 Out of Stock</div>`;
+        } else if (!ok) {
+          actionEl = `<div class="w-full py-2.5 rounded-xl bg-gray-100 text-gray-400 font-medium text-sm text-center">🔒 Need ${item.minKg} kg (You: ${state.personalKg.toFixed(1)} kg)</div>`;
+        } else {
+          actionEl = `<button onclick="claimItem(${i})" class="btn-primary w-full py-2.5 rounded-xl text-white font-semibold text-sm">Claim Share →</button>`;
+        }
+        return `<div class="harvest-card rounded-2xl shadow-md card-hover overflow-hidden border ${ok && !outOfStock ? 'border-green-200' : 'border-gray-100'} relative">
+      ${stockLabel}
+      <div class="p-5">
+        <div class="text-4xl mb-3">${item.emoji}</div>
+        <span class="inline-block text-xs font-semibold px-2 py-0.5 rounded-full text-white ${item.tierBg} mb-2">${item.tier}</span>
+        <h3 class="font-bold text-gray-800 text-base mb-1">${item.name}</h3>
+        <p class="text-xs text-gray-500 mb-3 leading-relaxed">${item.desc}</p>
+        <div class="flex items-center justify-between text-xs text-gray-400 mb-4">
+          <span>📦 ${item.qty > 0 ? item.qty + ' available' : 'None left'}</span>
+          <span>📏 ${item.unit}</span>
+        </div>
+        ${actionEl}
+      </div>
+    </div>`;
+      }).join('');
+    }
+    function claimItem(i) {
+      const item = HARVEST_ITEMS[i];
+      if (item.qty <= 0) { showToast('🚫', 'This item is out of stock.'); return; }
+      // Decrement qty in state
+      item.qty = Math.max(0, item.qty - 1);
+      // Update claim modal
+      document.getElementById('claim-modal-title').textContent = item.name + ' – Claimed!';
+      document.getElementById('claim-emoji').textContent = item.emoji;
+      document.getElementById('claim-desc').textContent = `Your ${item.unit} is reserved. Pickup this Saturday 9–11 AM at the Rooftop Garden, Building 7.`;
+      document.getElementById('claim-modal').classList.remove('hidden');
+      showToast('✅', 'Claimed: ' + item.name);
+      // Re-render catalog to reflect updated qty / out-of-stock state
+      renderHarvest();
+    }
+    function closeClaimModal() { document.getElementById('claim-modal').classList.add('hidden'); }
+
+    // ─── OUR PROCESS MODAL ────────────────────
+    function openProcessModal() {
+      document.getElementById('process-modal').classList.remove('hidden');
+    }
+    function closeProcessModal() {
+      document.getElementById('process-modal').classList.add('hidden');
+    }
+
+    // ─── MEMBERS ───────────────────────────────
+    let MEMBERS = [
+      { id: 2, name: 'Pooja Singh', role: 'Wing B Resident Volunteer', dept: '', photo: '', bio: 'Champion-tier composter helping neighbors get started with sorting.' },
+      { id: 3, name: 'Priya Mehta', role: 'Wing A Resident Volunteer', dept: '', photo: '', bio: 'Runs the weekend HarvestShare pickup desk at the Rooftop Garden.' },
+    ];
+    let memberIdCounter = MEMBERS.length;
+
+    function memberInitials(name) {
+      return name.trim().split(/\s+/).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
+    }
+
+    function renderMembers() {
+      const grid = document.getElementById('members-grid');
+      if (!grid) return;
+      const isManager = !!(currentAccount && currentAccount.isManager);
+      const addBtn = document.getElementById('add-member-btn');
+      if (addBtn) addBtn.classList.toggle('hidden', !isManager);
+      grid.innerHTML = MEMBERS.map((m, i) => {
+        const avatar = m.photo
+          ? `<img src="${m.photo}" alt="${m.name}" class="w-14 h-14 rounded-2xl object-cover flex-shrink-0" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'w-14 h-14 rounded-2xl bg-green-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0',textContent:'${memberInitials(m.name)}'}))" />`
+          : `<div class="w-14 h-14 rounded-2xl bg-green-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">${memberInitials(m.name)}</div>`;
+        const deptLine = m.dept ? `<div class="text-[11px] text-green-700 bg-green-50 inline-block px-2 py-0.5 rounded-full mt-1">${m.dept}</div>` : '';
+        const bioLine = m.bio ? `<p class="text-xs text-gray-500 mt-2 leading-relaxed">${m.bio}</p>` : '';
+        const controls = isManager ? `
+          <div class="flex gap-2 mt-3 pt-3 border-t border-gray-50">
+            <button onclick="openMemberModal(${m.id})" aria-label="Edit ${m.name}" class="flex-1 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 rounded-lg py-1.5 transition-colors">✏️ Edit</button>
+            <button onclick="deleteMember(${m.id})" aria-label="Remove ${m.name}" class="flex-1 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg py-1.5 transition-colors">🗑️ Remove</button>
+          </div>` : '';
+        return `<div class="member-card bg-white rounded-2xl shadow-md border border-gray-100 p-5 card-hover" style="animation-delay:${i * 60}ms">
+          <div class="flex items-start gap-3.5">
+            ${avatar}
+            <div class="min-w-0">
+              <h3 class="font-bold text-gray-800 text-sm truncate">${m.name}</h3>
+              <p class="text-xs text-gray-500">${m.role}</p>
+              ${deptLine}
+            </div>
+          </div>
+          ${bioLine}
+          ${controls}
+        </div>`;
+      }).join('');
+    }
+
+    function openMemberModal(id) {
+      if (!currentAccount || !currentAccount.isManager) {
+        showToast('🔒', 'Access restricted to Facility Managers');
+        return;
+      }
+      const editId = document.getElementById('member-edit-id');
+      const title = document.getElementById('member-modal-title');
+      const saveBtn = document.getElementById('member-save-btn');
+      if (id) {
+        const m = MEMBERS.find(x => x.id === id);
+        if (!m) return;
+        editId.value = m.id;
+        document.getElementById('member-name').value = m.name;
+        document.getElementById('member-role').value = m.role;
+        document.getElementById('member-dept').value = m.dept || '';
+        document.getElementById('member-photo').value = m.photo || '';
+        document.getElementById('member-bio').value = m.bio || '';
+        title.textContent = 'Edit Member';
+        saveBtn.textContent = 'Save Changes';
+      } else {
+        editId.value = '';
+        document.getElementById('member-form').reset();
+        title.textContent = 'Add Member';
+        saveBtn.textContent = 'Save Member';
+      }
+      document.getElementById('member-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('member-name').focus(), 50);
+    }
+    function closeMemberModal() {
+      document.getElementById('member-modal').classList.add('hidden');
+    }
+    function saveMember(event) {
+      event.preventDefault();
+      if (!currentAccount || !currentAccount.isManager) {
+        showToast('🔒', 'Access restricted to Facility Managers');
+        return;
+      }
+      const editId = document.getElementById('member-edit-id').value;
+      const name = document.getElementById('member-name').value.trim();
+      const role = document.getElementById('member-role').value.trim();
+      const dept = document.getElementById('member-dept').value.trim();
+      const photo = document.getElementById('member-photo').value.trim();
+      const bio = document.getElementById('member-bio').value.trim();
+      if (!name || !role) { showToast('⚠️', 'Name and role are required.'); return; }
+      if (editId) {
+        const m = MEMBERS.find(x => x.id === parseInt(editId, 10));
+        if (m) { m.name = name; m.role = role; m.dept = dept; m.photo = photo; m.bio = bio; }
+        showToast('✅', 'Member updated!');
+      } else {
+        memberIdCounter += 1;
+        MEMBERS.push({ id: memberIdCounter, name, role, dept, photo, bio });
+        showToast('✅', 'Member added!');
+      }
+      renderMembers();
+      closeMemberModal();
+    }
+    function deleteMember(id) {
+      if (!currentAccount || !currentAccount.isManager) {
+        showToast('🔒', 'Access restricted to Facility Managers');
+        return;
+      }
+      const m = MEMBERS.find(x => x.id === id);
+      if (!m) return;
+      if (!confirm(`Remove ${m.name} from the Members section?`)) return;
+      MEMBERS = MEMBERS.filter(x => x.id !== id);
+      renderMembers();
+      showToast('🗑️', 'Member removed.');
+    }
+
+    // ─── FACILITY MODAL ───────────────────────
+    function openFacilityModal() {
+      // Role-based access control
+      if (!currentAccount || !currentAccount.isManager) {
+        showToast('🔒', 'Access restricted to Facility Managers');
+        return;
+      }
+      document.getElementById('fac-total').textContent = state.buildingKg.toFixed(1);
+      document.getElementById('batch-date').value = new Date().toISOString().split('T')[0];
+      renderBatchLogs();
+      document.getElementById('facility-modal').classList.remove('hidden');
+    }
+    function closeFacilityModal() { document.getElementById('facility-modal').classList.add('hidden'); }
+    function logBatch() {
+      const date = document.getElementById('batch-date').value;
+      const inp = parseFloat(document.getElementById('batch-in').value) || 0;
+      const out = parseFloat(document.getElementById('batch-out').value) || 0;
+      const notes = document.getElementById('batch-notes').value;
+      if (!date || !inp) { showToast('⚠️', 'Please fill date and waste input.'); return; }
+      state.batchLogs.unshift({ date, inp, out, notes });
+      state.buildingKg = Math.round((state.buildingKg + inp) * 10) / 10;
+      // ── Centralized dashboard sync ──
+      updateDashboard();
+      animateCounter('building-kg', state.buildingKg);
+      animateCounter('fertilizer-kg', Math.round(state.buildingKg * 0.3 * 10) / 10);
+      renderBatchLogs();
+      document.getElementById('batch-in').value = '';
+      document.getElementById('batch-out').value = '';
+      document.getElementById('batch-notes').value = '';
+      showToast('✅', 'Batch log submitted!');
+      // ── Fire push notification to all residents ──
+      showPush({
+        icon: '🪣',
+        title: 'New Compost Batch Ready! 🎉',
+        body: `${inp} kg waste → ${out > 0 ? out + ' kg compost' : 'processing'}. HarvestShare updated — claim your share now!`,
+        tab: 'harvest'
+      });
+    }
+    function renderBatchLogs() {
+      const list = document.getElementById('batch-log-list');
+      if (!list) return;
+      list.innerHTML = state.batchLogs.slice(0, 5).map(b =>
+        `<div class="flex items-start gap-3 bg-green-50 rounded-xl p-3">
+      <div class="w-8 h-8 rounded-lg bg-green-200 flex items-center justify-center text-sm flex-shrink-0">♻️</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-xs font-semibold text-green-800">${b.date} — In: ${b.inp} kg, Out: ${b.out} kg</div>
+        <div class="text-xs text-gray-500 mt-0.5 truncate">${b.notes || 'No notes'}</div>
+      </div>
+    </div>`).join('');
+    }
+
+    // ─── PUSH NOTIFICATION ENGINE ─────────────────
+    let _pushTimer = null;
+    let _pushTargetTab = 'harvest';
+
+    function showPush(msg) {
+      const pn = document.getElementById('push-notification');
+      if (!pn) return;
+      document.getElementById('push-icon').textContent = msg.icon;
+      document.getElementById('push-title').textContent = msg.title;
+      document.getElementById('push-body').textContent = msg.body;
+      _pushTargetTab = msg.tab || 'harvest';
+      // Slide in
+      pn.classList.add('visible');
+      // Auto-dismiss after 8 s
+      clearTimeout(_pushTimer);
+      _pushTimer = setTimeout(dismissPush, 8000);
+    }
+
+    function dismissPush() {
+      const pn = document.getElementById('push-notification');
+      if (pn) pn.classList.remove('visible');
+      clearTimeout(_pushTimer);
+    }
+
+    function pushDeepLink() {
+      dismissPush();
+      showTab(_pushTargetTab);
+    }
+
+    // ─── TOAST ────────────────────────────────
+    let toastTimer;
+    function showToast(icon, text) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-icon').textContent = icon;
+      document.getElementById('toast-text').textContent = text;
+      toast.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    // ─── FLOATING LEAVES ──────────────────────
+    function createFloatingLeaves() {
+      const c = document.getElementById('floating-leaves-container');
+      if (!c) return;
+      const leaves = ['🍃', '🌿', '🍂', '🌱', '☘️'];
+      for (let i = 0; i < 12; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'floating-leaf';
+        leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+        leaf.style.cssText = `left:${Math.random() * 100}%;bottom:-20px;font-size:${0.9 + Math.random() * 0.8}rem;animation-duration:${6 + Math.random() * 9}s;animation-delay:${Math.random() * 7}s;`;
+        c.appendChild(leaf);
+      }
+    }
+
+    // ─── ESCAPE KEY HANDLER ───────────────────
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      ['reward-modal', 'facility-modal', 'claim-modal', 'waste-form-modal', 'process-modal', 'member-modal'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
+      });
+      document.getElementById('profile-dropdown')?.classList.add('hidden');
+    });
+
+    // ─── INIT ────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      // Show login screen first
+      renderAccountGrid();
+      renderMembers();
+      createLoginLeaves();
+      initQrScanner();
+      // Focus PIN on load
+      setTimeout(() => {
+        const pin = document.getElementById('login-pin');
+        if (pin) pin.focus();
+      }, 300);
+    });
+  </script>
+
+  <!-- Hidden scratch element for Html5Qrcode file scan -->
+  <div id="qr-file-scanner-scratch" style="display:none"></div>
+</body>
+
+</html>
